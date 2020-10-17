@@ -1,5 +1,5 @@
 import pygame
-from classes import Image, Color, PlayMode, Sound, Essentials
+from classes import *
 from functions import *
 
 
@@ -12,6 +12,7 @@ img = Image()
 col = Color()
 pm = PlayMode()
 sound = Sound()
+fnt = TextFont()
 ess = Essentials()
 
 
@@ -185,7 +186,7 @@ while active:
 
         # Rendering and blitting
         root.blit(img.win, (0, 0))
-        text = pygame.font.Font('Pacifico.ttf', 40).render(string, True, (255, 238, 46))
+        text = pygame.font.Font(fnt.pacifico, 40).render(string, True, (255, 238, 46))
         text = pygame.transform.rotate(text, 4)
         root.blit(text, [190, 100])
 

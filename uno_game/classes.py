@@ -58,3 +58,8 @@ class Sound(object):
         self.card_drawn = pygame.mixer.Sound('./sound/card_drawn.wav')
         self.card_played = pygame.mixer.Sound('./sound/card_played.wav')
         self.shuffled = pygame.mixer.Sound('./sound/shuffle.wav')
+
+
+class TextFont(object):
+    def __init__(self):
+        self.pacifico = "./fonts/Pacifico.ttf"
