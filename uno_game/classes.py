@@ -11,9 +11,12 @@ class Essentials(object):
         self.deck1 = list()
         self.deck2 = list()
         self.direction_check = 1
-        self.position = 0
+        self.position = -1
         self.current = list()
-        self.taken_from_stack = False
+        self.drawn = False
+        self.played = False
+        self.played_check = 0
+        self.special_check = 0
         self.color = ['Blue', 'Red', 'Green', 'Yellow']
 
 

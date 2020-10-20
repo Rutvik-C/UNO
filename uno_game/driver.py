@@ -26,7 +26,8 @@ pygame.display.set_icon(img.icon)
 pygame.mixer.music.load(sound.back_g)
 pygame.mixer.music.play(-1)  # continuous bg music
 pygame.mixer.music.set_volume(0.3)
-music_on = True
+pygame.mixer.music.pause()
+music_on = False
 
 
 # Setting up initial game variables
@@ -94,8 +95,7 @@ while active:
 
                 for i in range(625, 625 - 50 * len(ess.player_list[0]), -50):
                     if i < m[0] < i + 50 and 470 < m[1] < 585:
-                        print(int((625 - i) / 50))
-                        ess.player_list[0].pop()
+                        play_this_card(ess, ess.player_list[0][int((625 - i) / 50)])
                         if music_on:
                             sound.card_played.play()
 
@@ -125,7 +125,10 @@ while active:
         root.blit(img.bg, (0, 0))
         root.blit(img.back, (10, 10))
         root.blit(img.card_back, (340, 240))
-        root.blit(pygame.image.load("./images/" + ess.current[1] + str(ess.current[0]) + ".png"), (580, 240))
+        try:
+            root.blit(pygame.image.load("./images/" + ess.current[1] + str(ess.current[0]) + ".png"), (580, 240))
+        except:
+            pass
         root.blit(img.p1, (290, 30))
         root.blit(img.p2, (865, 90))
         root.blit(img.p3, (55, 440))
@@ -146,7 +149,10 @@ while active:
 
         else:
             if play_lag == 200:  # Lag Implementation
-                print("Played: Player #", ess.position)
+
+                # Calculating next player
+                set_curr_player(ess)
+                print("calling bot fun ->", ess.position)
 
                 # Checking for player played
                 if ess.position == 0:
@@ -154,27 +160,31 @@ while active:
                     player_playing = True
                 else:
                     # Reinitialising Flags
-                    ess.taken_from_stack = False
+                    ess.played = False
+                    ess.drawn = False
 
                     # bot_play(player - 1)
-                    ess.player_list[ess.position].pop()
-                    pass
+                    # ess.player_list[ess.position].pop()
+                    bot_action(ess)
 
-                # Calculating next player
-                set_curr_player(ess)
+                # print("Played: Player #", ess.position)
+                # print()
 
-                if ess.position != 0:
+                # # Calculating next player
+                # set_curr_player(ess)
+                print()
+
+                if ess.position != 3:
                     play_lag = 0
 
             else:
                 play_lag += 1
-
                 # Line graphic
-                if ess.position == 1:
+                if ess.position == 0:
                     root.blit(img.line, (67, 512))
-                elif ess.position == 2:
+                elif ess.position == 1:
                     root.blit(img.line, (293, 85))
-                elif ess.position == 3:
+                elif ess.position == 2:
                     root.blit(img.line, (870, 145))
 
     # RULES PAGE SCREEN

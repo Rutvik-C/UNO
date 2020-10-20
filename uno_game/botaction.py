@@ -3,7 +3,7 @@ def action():
     global special_check=0
     played_check = 0
     check = 0
-    if current[0] == '+2' or current[0] == '+4':
+    if current[0] == '+2' and special_check == 0:
         for _ in range(2):
             try:
                 player_list[position].append(deck1.pop())
@@ -12,16 +12,18 @@ def action():
                 random.shuffle(deck1)
                 player_list[position].append(deck1.pop())
         print("Draw", current[0])
-        if current[0] == '+4' and special_check=0:
-            for _ in range(2):
-                try:
-                    player_list[position].append(deck1.pop())
-                except:
-                    deck1, deck2 = deck2, deck1
-                    random.shuffle(deck1)
-                    player_list[position].append(deck1.pop())
         played_check = 1
-        special_check=1
+        special_check = 1
+    if current[0] == '+4' and special_check == 0:
+        for _ in range(4):
+            try:
+                player_list[position].append(deck1.pop())
+            except:
+                deck1, deck2 = deck2, deck1
+                random.shuffle(deck1)
+                player_list[position].append(deck1.pop())
+        played_check = 1
+        special_check = 1
 
     if played_check == 0:
         for item in player_list[position]:
