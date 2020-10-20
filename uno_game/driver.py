@@ -1,4 +1,3 @@
-import pygame
 from classes import *
 from functions import *
 
@@ -88,17 +87,20 @@ while active:
                     music_on = True
 
             if player_playing:  # Card click operations
+                if 775 < m[0] < 840 and 505 < m[1] < 570:  # End turn button
+                    if music_on:
+                        sound.click.play()
+                    player_playing = False
+
                 for i in range(625, 625 - 50 * len(ess.player_list[0]), -50):
                     if i < m[0] < i + 50 and 470 < m[1] < 585:
                         print(int((625 - i) / 50))
-                        player_playing = False
                         ess.player_list[0].pop()
                         if music_on:
                             sound.card_played.play()
 
                 if 340 < m[0] < 425 and 240 < m[1] < 355:
-                    print("Taken from stack")
-                    player_playing = False
+                    take_from_stack(ess)
                     if music_on:
                         sound.card_drawn.play()
 
@@ -140,6 +142,7 @@ while active:
         # Play conditions
         if player_playing:
             root.blit(img.line, (682, 550))
+            root.blit(img.done, (775, 505))
 
         else:
             if play_lag == 200:  # Lag Implementation
@@ -150,6 +153,9 @@ while active:
                     print("Player play")
                     player_playing = True
                 else:
+                    # Reinitialising Flags
+                    ess.taken_from_stack = False
+
                     # bot_play(player - 1)
                     ess.player_list[ess.position].pop()
                     pass
@@ -187,7 +193,7 @@ while active:
         # Rendering and blitting
         root.blit(img.win, (0, 0))
         text = pygame.font.Font(fnt.pacifico, 40).render(string, True, (255, 238, 46))
-        text = pygame.transform.rotate(text, 4)
+        # text = pygame.transform.rotate(text, 4)
         root.blit(text, [190, 100])
 
     # Music toggle button

@@ -13,6 +13,7 @@ class Essentials(object):
         self.direction_check = 1
         self.position = 0
         self.current = list()
+        self.taken_from_stack = False
         self.color = ['Blue', 'Red', 'Green', 'Yellow']
 
 

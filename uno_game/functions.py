@@ -2,6 +2,11 @@ import itertools
 import random
 
 
+winner = -1
+player_playing = False
+play_lag = -1
+
+
 def peek(s):
     return s[-1]
 
@@ -59,3 +64,10 @@ def re_initialize(ob):
 
     # Dealing the cards
     create(ob)
+
+
+def take_from_stack(ob):
+    if not ob.taken_from_stack:
+        ob.player_list[0].append(ob.deck1.pop())
+        ob.taken_from_stack = True
+
