@@ -113,7 +113,7 @@ while active:
     elif play_mode == pm.in_game:
 
         # Checking for winner
-        if any(map(is_empty, ess.player_list)):
+        if any(map(is_empty, ess.player_list)) and not player_playing:
             winner = [ess.player_list.index(x) for x in ess.player_list if len(x) == 0]
             winner = winner[0]
             play_mode = pm.win
@@ -129,7 +129,7 @@ while active:
         try:
             root.blit(pygame.image.load("./images/" + ess.current[1] + str(ess.current[0]) + ".png"), (580, 240))
         except:
-            root.blit(pygame.image.load("./images/" + ess.current[1] + str(ess.current[0]) + ".png"), (580, 240))
+            root.blit(pygame.image.load("./images/" + ess.current[1] + ".png"), (580, 240))
         root.blit(img.p1, (290, 30))
         root.blit(img.p2, (865, 90))
         root.blit(img.p3, (55, 440))
@@ -153,7 +153,7 @@ while active:
                 disp = False
 
                 # Calculating next player
-                set_curr_player(ess)
+                set_curr_player(ess, True)
                 print("calling bot fun ->", ess.position)
 
                 # Checking for player played

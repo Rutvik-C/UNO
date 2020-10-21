@@ -28,19 +28,30 @@ def create(ob):
     ob.deck2.append(ob.deck1.pop())
     ob.current = ob.deck2[-1]
 
-    for j in range(4):
+    for j in range(1, 4):
         for _ in range(7):
             ob.player_list[j].append(ob.deck1.pop())
 
+    ob.player_list[0].append(("Reverse", "Red"))
+    ob.player_list[0].append(("Reverse", "Yellow"))
+    ob.player_list[0].append(("Reverse", "Blue"))
+    ob.player_list[0].append(("Reverse", "Green"))
+    ob.player_list[0].append(("Skip", "Red"))
+    ob.player_list[0].append(("Skip", "Yellow"))
+    ob.player_list[0].append(("Skip", "Blue"))
+    ob.player_list[0].append(("Skip", "Green"))
 
-def set_curr_player(ob):
+
+def set_curr_player(ob, default):
     if ob.current[0] == 'Reverse' and ob.special_check == 0:
         ob.direction_check *= -1
         ob.special_check = 1
     if ob.current[0] == 'Skip' and ob.special_check == 0:
         ob.special_check = 1
         ob.position = (ob.position + ob.direction_check) % 4
-    ob.position = (ob.position + ob.direction_check) % 4
+
+    if default:
+        ob.position = (ob.position + ob.direction_check) % 4
 
 
 def is_empty(x):
@@ -86,6 +97,7 @@ def play_this_card(ob, card):
             ob.current = peek(ob.deck2)
             ob.p1.remove(ob.current)
             ob.special_check = 0
+            set_curr_player(ob, False)
 
         if card[1] == 'Black':
             ob.played, ob.drawn = True, True
