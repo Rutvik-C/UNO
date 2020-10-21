@@ -18,6 +18,7 @@ class Essentials(object):
         self.choose_color = False
         self.played_check = 0
         self.special_check = 0
+        self.uno = False
         self.color = ['Blue', 'Red', 'Green', 'Yellow']
 
 

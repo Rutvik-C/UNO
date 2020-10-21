@@ -135,10 +135,20 @@ while active:
     elif play_mode == pm.in_game:
 
         # Checking for winner
-        if any(map(is_empty, ess.player_list)) and not player_playing:
-            winner = [ess.player_list.index(x) for x in ess.player_list if len(x) == 0]
-            winner = winner[0]
-            play_mode = pm.win
+        for i in ess.player_list:
+            if len(i) == 0:
+                winner = ess.player_list.index(i)
+                break
+
+        # Checking for UNO
+        for i in ess.player_list[1:]:
+            if len(i) == 1:
+                # Blit UNO
+                pass
+
+        if len(ess.player_list[0]) == 1 and not ess.uno:
+            pass
+            # MALHAR YOUR FINE WALA ALGO
 
         # Initial dealing sounds
         if play_lag == -1 and music_on:
@@ -156,8 +166,18 @@ while active:
         root.blit(img.p2, (865, 90))
         root.blit(img.p3, (55, 440))
         root.blit(img.p4, (675, 490))
+
+        text = pygame.font.Font(fnt.pacifico, 20).render("YOU", True, (255, 238, 46))
+        root.blit(text, [690, 455])
+        text = pygame.font.Font(fnt.pacifico, 20).render("EDITH", True, (255, 238, 46))
+        root.blit(text, [290, -4])
+        text = pygame.font.Font(fnt.pacifico, 20).render("JARVIS", True, (255, 238, 46))
+        root.blit(text, [865, 55])
+        text = pygame.font.Font(fnt.pacifico, 20).render("FRIDAY", True, (255, 238, 46))
+        root.blit(text, [55, 405])
+
         for i in range(len(ess.player_list[1])):
-            root.blit(img.card_back_l, (40, 335 - 30 * i))
+            root.blit(img.card_back_l, (40, 315 - 30 * i))
         for i in range(len(ess.player_list[2])):
             root.blit(img.card_back_i, (380 + 30 * i, 20))
         for i in range(len(ess.player_list[3])):
@@ -252,8 +272,12 @@ while active:
         string = ""
         if winner == 0:
             string = "Well Done! You've Won this Round!"
-        else:
-            string = "Bot #%d has won this Round!" % winner
+        elif winner == 1:
+            string = "FRIDAY has won this Round!"
+        elif winner == 1:
+            string = "EDITH has won this Round!"
+        elif winner == 1:
+            string = "JARVIS has won this Round!"
 
         # Rendering and blitting
         root.blit(img.win, (0, 0))

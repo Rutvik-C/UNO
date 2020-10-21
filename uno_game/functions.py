@@ -45,13 +45,6 @@ def set_curr_player(ob, default):
         ob.position = (ob.position + ob.direction_check) % 4
 
 
-def is_empty(x):
-    if len(x) == 0:
-        return True
-
-    return False
-
-
 def re_initialize(ob):
     global winner, player_playing, play_lag
     winner = -1
