@@ -129,7 +129,7 @@ while active:
         try:
             root.blit(pygame.image.load("./images/" + ess.current[1] + str(ess.current[0]) + ".png"), (580, 240))
         except:
-            pass
+            root.blit(pygame.image.load("./images/" + ess.current[1] + str(ess.current[0]) + ".png"), (580, 240))
         root.blit(img.p1, (290, 30))
         root.blit(img.p2, (865, 90))
         root.blit(img.p3, (55, 440))
