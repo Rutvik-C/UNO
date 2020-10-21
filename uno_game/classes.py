@@ -15,6 +15,7 @@ class Essentials(object):
         self.current = list()
         self.drawn = False
         self.played = False
+        self.choose_color = False
         self.played_check = 0
         self.special_check = 0
         self.color = ['Blue', 'Red', 'Green', 'Yellow']
@@ -53,6 +54,7 @@ class Image(object):
         self.line = pygame.image.load("./images/minus-line.png")
         self.help = pygame.image.load("./images/help.png")
         self.win = pygame.image.load("./images/winner.png")
+        self.pick_color = pygame.image.load("./images/microsoft.png")
 
 
 class Sound(object):

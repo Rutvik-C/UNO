@@ -32,8 +32,8 @@ def create(ob):
         for _ in range(7):
             ob.player_list[j].append(ob.deck1.pop())
 
-    ob.player_list[0].append(("Reverse", "Red"))
-    ob.player_list[0].append(("Reverse", "Yellow"))
+    ob.player_list[0].append(('Wild', 'Black'),)
+    ob.player_list[0].append(('+4', 'Black'))
     ob.player_list[0].append(("Reverse", "Blue"))
     ob.player_list[0].append(("Reverse", "Green"))
     ob.player_list[0].append(("Skip", "Red"))
@@ -101,13 +101,23 @@ def play_this_card(ob, card):
 
         if card[1] == 'Black':
             ob.played, ob.drawn = True, True
-            new_color = input()
-            print("new color is:", new_color)
+            ob.choose_color = True
             ob.p1.remove(card)
-            card = (card[0], new_color)
-            ob.deck2.append(card)
-            ob.current = peek(ob.deck2)
-            ob.special_check = 0
+            # new_color = input()
+            # print("new color is:", new_color)
+            # ob.p1.remove(card)
+            # card = (card[0], new_color)
+            # ob.deck2.append(card)
+            # ob.current = peek(ob.deck2)
+            # ob.special_check = 0
+
+
+def play_this_card_2(ob, color):
+    print("new color is:", color)
+    card = ("", color)
+    ob.deck2.append(card)
+    ob.current = peek(ob.deck2)
+    ob.special_check = 0
 
 
 def bot_action(ob):

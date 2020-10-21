@@ -105,6 +105,28 @@ while active:
                     if music_on:
                         sound.card_drawn.play()
 
+            if ess.choose_color:
+                if 468 < m[0] < 500 and 400 < m[1] < 432:  # Red Button
+                    ess.choose_color = False
+                    play_this_card_2(ess, "Red")
+                    if music_on:
+                        sound.click.play()
+                if 500 < m[0] < 532 and 400 < m[1] < 432:  # Green Button
+                    ess.choose_color = False
+                    play_this_card_2(ess, "Green")
+                    if music_on:
+                        sound.click.play()
+                if 468 < m[0] < 500 and 432 < m[1] < 464:  # Blue Button
+                    ess.choose_color = False
+                    play_this_card_2(ess, "Blue")
+                    if music_on:
+                        sound.click.play()
+                if 500 < m[0] < 532 and 432 < m[1] < 464:  # Yellow Button
+                    ess.choose_color = False
+                    play_this_card_2(ess, "Yellow")
+                    if music_on:
+                        sound.click.play()
+
     # HOME PAGE SCREEN
     if play_mode == pm.load:
         root.blit(img.load, (0, 0))
@@ -142,6 +164,9 @@ while active:
             root.blit(img.card_back_r, (845, 190 + 30 * i))
         for i in range(len(ess.player_list[0])):
             root.blit(pygame.image.load("./images/" + ess.player_list[0][i][1] + str(ess.player_list[0][i][0]) + ".png"), (590 - 50 * i, 470))
+
+        if ess.choose_color:
+            root.blit(img.pick_color, (468, 400))
 
         # Play conditions
         if player_playing:
