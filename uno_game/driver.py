@@ -37,6 +37,7 @@ winner = -1
 player_playing = False
 play_lag = -1
 
+disp = False
 
 # Dealing the cards
 create(ess)
@@ -149,6 +150,7 @@ while active:
 
         else:
             if play_lag == 200:  # Lag Implementation
+                disp = False
 
                 # Calculating next player
                 set_curr_player(ess)
@@ -174,17 +176,22 @@ while active:
                 # set_curr_player(ess)
                 print()
 
-                if ess.position != 3:
-                    play_lag = 0
+                # if (ess.direction_check == 1 and ess.position != 3) or (ess.direction_check == -1 and ess.position != 1):
+                play_lag = 0
 
             else:
                 play_lag += 1
+
+                if not disp:
+                    print("\n*** %d ***\n*** gen=%d ***\n" % (ess.position, (ess.position + ess.direction_check) % 4))
+                    disp = True
+
                 # Line graphic
-                if ess.position == 0:
+                if (ess.position + ess.direction_check) % 4 == 1:
                     root.blit(img.line, (67, 512))
-                elif ess.position == 1:
+                elif (ess.position + ess.direction_check) % 4 == 2:
                     root.blit(img.line, (293, 85))
-                elif ess.position == 2:
+                elif (ess.position + ess.direction_check) % 4 == 3:
                     root.blit(img.line, (870, 145))
 
     # RULES PAGE SCREEN
