@@ -28,18 +28,9 @@ def create(ob):
     ob.deck2.append(ob.deck1.pop())
     ob.current = ob.deck2[-1]
 
-    for j in range(1, 4):
+    for j in range(0, 4):
         for _ in range(7):
             ob.player_list[j].append(ob.deck1.pop())
-
-    ob.player_list[0].append(('Wild', 'Black'),)
-    ob.player_list[0].append(('+4', 'Black'))
-    ob.player_list[0].append(("Reverse", "Blue"))
-    ob.player_list[0].append(("Reverse", "Green"))
-    ob.player_list[0].append(("Skip", "Red"))
-    ob.player_list[0].append(("Skip", "Yellow"))
-    ob.player_list[0].append(("Skip", "Blue"))
-    ob.player_list[0].append(("Skip", "Green"))
 
 
 def set_curr_player(ob, default):
@@ -103,6 +94,8 @@ def play_this_card(ob, card):
             ob.played, ob.drawn = True, True
             ob.choose_color = True
             ob.p1.remove(card)
+
+            ob.deck2.append(card)
             # new_color = input()
             # print("new color is:", new_color)
             # ob.p1.remove(card)
@@ -114,8 +107,8 @@ def play_this_card(ob, card):
 
 def play_this_card_2(ob, color):
     print("new color is:", color)
-    card = ("", color)
-    ob.deck2.append(card)
+    # card = ("", color)
+    ob.deck2[-1] = (ob.deck2[-1][0], color)
     ob.current = peek(ob.deck2)
     ob.special_check = 0
 
@@ -135,7 +128,7 @@ def bot_action(ob):
         print("Draw", ob.current[0])
         ob.played_check = 1
         ob.special_check = 1
-    if ob.current[0] == '+4' and ob.special_check == 0:
+    elif ob.current[0] == '+4' and ob.special_check == 0:
         for _ in range(4):
             try:
                 ob.player_list[ob.position].append(ob.deck1.pop())
@@ -149,16 +142,25 @@ def bot_action(ob):
     if ob.played_check == 0:
         check = 0
         for item in ob.player_list[ob.position]:
-            if ob.current[1] in item or ob.current[0] in item:
+            if ob.current[1] in item or ob.current[0] in item or item[1] == "Black":
                 print("P", ob.position, " played:", item, sep="")
                 ob.special_check = 0
+
+                print(ob.player_list[3])
                 ob.deck2.append(item)
+                print(ob.player_list[3])
+
                 ob.current = peek(ob.deck2)
-                if ob.current[1] == 'Black':
+                # set_curr_player(ob, False)
+
+                if item[1] == 'Black':
                     new_color = random.choice(ob.color)
                     print("Color changes to:", new_color)
                     ob.current = (ob.current[0], new_color)
+
                 ob.player_list[ob.position].remove(item)
+
+                set_curr_player(ob, False)
                 check = 1
                 break
 
@@ -193,6 +195,7 @@ def bot_action(ob):
                 elif new_card[1] == ob.current[1] or new_card[0] == ob.current[0]:
                     print("P", ob.position, " played:", new_card, sep="")
                     ob.deck2.append(new_card)
+                    set_curr_player(ob, False)
                     ob.special_check = 0
                 else:
                     ob.player_list[ob.position].append(new_card)

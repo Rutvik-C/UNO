@@ -170,6 +170,29 @@ while active:
 
         # Play conditions
         if player_playing:
+            if not ess.drawn and not ess.played:
+                if ess.current[0] == '+2' and ess.special_check == 0:
+                    for _ in range(2):
+                        try:
+                            ess.player_list[0].append(ess.deck1.pop())
+                        except:
+                            ess.deck1, ess.deck2 = ess.deck2, ess.deck1
+                            random.shuffle(ess.deck1)
+                            ess.player_list[0].append(ess.deck1.pop())
+                    print("Draw", ess.current[0])
+                    ess.special_check = 1
+                    player_playing = False
+                elif ess.current[0] == '+4' and ess.special_check == 0:
+                    for _ in range(4):
+                        try:
+                            ess.player_list[0].append(ess.deck1.pop())
+                        except:
+                            ess.deck1, ess.deck2 = ess.deck2, ess.deck1
+                            random.shuffle(ess.deck1)
+                            ess.player_list[0].append(ess.deck1.pop())
+                    ess.special_check = 1
+                    player_playing = False
+
             root.blit(img.line, (682, 550))
             root.blit(img.done, (775, 505))
 
