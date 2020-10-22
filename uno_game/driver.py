@@ -149,6 +149,10 @@ while active:
         if len(ess.player_list[0]) == 1 and not ess.uno:
             pass
             # MALHAR YOUR FINE WALA ALGO
+            ess.player_list[0].append(ess.player_list[1].pop())
+            ess.player_list[0].append(ess.player_list[2].pop())
+            ess.player_list[0].append(ess.player_list[3].pop())
+            ess.uno=True
 
         # Initial dealing sounds
         if play_lag == -1 and music_on:
