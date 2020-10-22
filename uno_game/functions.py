@@ -167,7 +167,21 @@ def bot_action(ob):
                     ob.special_check = 0
                     ob.deck2.append(item)
                     ob.current = peek(ob.deck2)
-                    new_color = random.choice(ob.color)
+                    #if !ess.easy:
+                    #	d=dict()
+                    #	d['Blue']=0
+                    #	d['Green']=0
+                    #	d['Yellow']=0
+                    #	d['Red']=0
+                    #	d['Black']=0
+                    #	for item in ess.player_list[i]:
+                    #		d[item[1]]+=1
+                    #	new_color = max(d, key=d.get)
+                    #	if newcolor='Black':
+                    #		new_color = random.choice(ob.color)
+                    #else:
+                    #   new_color = random.choice(ob.color)
+                    new_color = random.choice(ob.color)#comment this and uncomment previous
                     print("Color changes to:", new_color)
 
                     ob.message = "%s plays %s, new color is %s" % (ob.bot_map[ob.position], item[0], new_color)
@@ -186,7 +200,21 @@ def bot_action(ob):
                     new_card = (ob.deck1.pop())
                 if new_card[1] == 'Black':
                     print("3: P", ob.position, " played:", new_card, sep="")
-                    new_color = random.choice(ob.color)
+                    #if !ess.easy:
+                    #	d=dict()
+                    #	d['Blue']=0
+                    #	d['Green']=0
+                    #	d['Yellow']=0
+                    #	d['Red']=0
+                    #	d['Black']=0
+                    #	for item in ess.player_list[i]:
+                    #		d[item[1]]+=1
+                    #	new_color = max(d, key=d.get)
+                    #	if newcolor='Black':
+                    #		new_color = random.choice(ob.color)
+                #else:
+                 #   new_color = random.choice(ob.color)
+                    new_color = random.choice(ob.color)#comment this and uncomment previous
                     print("Color changes to:", new_color)
                     ob.message = "%s plays %s, new color is %s" % (ob.bot_map[ob.position], new_card[0], new_color)
 
@@ -201,4 +229,8 @@ def bot_action(ob):
                 else:
                     ob.player_list[ob.position].append(new_card)
         if len(ob.player_list[ob.position]) == 1:
-            ob.message = "%s shouted UNO!" % ob.bot_map[ob.position]
+            #if ess.easy:
+            #   if(random.randint(0,1)):
+            #      set_uno_flag=True
+            #      ob.message = "%s shouted UNO!" % ob.bot_map[ob.position]
+            ob.message = "%s shouted UNO!" % ob.bot_map[ob.position]#comment this and uncomment previous
