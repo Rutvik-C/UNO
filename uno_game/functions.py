@@ -136,7 +136,7 @@ def bot_action(ob):
     if ob.played_check == 0:
         check = 0
         for item in ob.player_list[ob.position]:
-            if ob.current[1] in item or ob.current[0] in item or item[1] == "Black":
+            if ob.current[1] in item or ob.current[0] in item:#removed or item[1]=="Black"
                 print("P", ob.position, " played:", item, sep="")
                 ob.special_check = 0
 
@@ -144,14 +144,11 @@ def bot_action(ob):
 
                 ob.current = peek(ob.deck2)
 
-                if item[1] == 'Black':
-                    new_color = random.choice(ob.color)
-                    print("Color changes to:", new_color)
-
-                    ob.message = "%s plays %s %s, new color is %s" % (ob.bot_map[ob.position], item[0], item[1], new_color)
-
-                    ob.current = (ob.current[0], new_color)
-
+                #if item[1] == 'Black':
+                    #new_color = random.choice(ob.color)
+                    #print("Color changes to:", new_color)
+                    #ob.message = "%s plays %s %s, new color is %s" % (ob.bot_map[ob.position], item[0], item[1], new_color)
+                    #ob.current = (ob.current[0], new_color)
                 ob.player_list[ob.position].remove(item)
 
                 set_curr_player(ob, False)
@@ -169,7 +166,7 @@ def bot_action(ob):
                     new_color = random.choice(ob.color)
                     print("Color changes to:", new_color)
 
-                    ob.message = "%s plays %s %s, new color is %s" % (ob.bot_map[ob.position], item[0], item[1], new_color)
+                    ob.message = "%s plays %s, new color is %s" % (ob.bot_map[ob.position], item[0], new_color)
 
                     ob.current = (ob.current[0], new_color)
                     ob.player_list[ob.position].remove(item)
@@ -187,7 +184,7 @@ def bot_action(ob):
                     print("P", ob.position, " played:", new_card, sep="")
                     new_color = random.choice(ob.color)
                     print("Color changes to:", new_color)
-                    ob.message = "%s plays %s %s, new color is %s" % (ob.bot_map[ob.position], new_card[0], new_card[1], new_color)
+                    ob.message = "%s plays %s, new color is %s" % (ob.bot_map[ob.position], new_card[0], new_color)
 
                     ob.current = (new_card[0], new_color)
                     ob.special_check = 0
