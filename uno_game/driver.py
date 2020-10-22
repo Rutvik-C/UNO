@@ -128,6 +128,16 @@ while active:
     # HOME PAGE SCREEN
     if play_mode == pm.load:
         root.blit(img.load, (0, 0))
+        text = pygame.font.Font(fnt.joe_fin, 50).render("<", True, (255, 238, 46))
+        root.blit(text, [20, 150])
+        text = pygame.font.Font(fnt.joe_fin, 50).render(">", True, (255, 238, 46))
+        root.blit(text, [60, 150])
+        if ess.easy:
+            text = pygame.font.Font(fnt.joe_fin, 50).render("FRIDAY", True, (255, 238, 46))
+            root.blit(text, [60, 410])
+        else:
+            text = pygame.font.Font(fnt.joe_fin, 50).render("FRIDAY", True, (255, 238, 46))
+            root.blit(text, [60, 410])
 
     # PLAYING MODE SCREEN
     elif play_mode == pm.in_game:
@@ -242,8 +252,8 @@ while active:
 
                 print()
 
-                if (ess.direction_check == 1 and ess.position != 3) or (ess.direction_check == -1 and ess.position != 1):
-                    play_lag = 0
+                # if (ess.direction_check == 1 and ess.position != 3) or (ess.direction_check == -1 and ess.position != 1):
+                play_lag = 0
 
             else:
                 play_lag += 1

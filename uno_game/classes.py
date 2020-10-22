@@ -20,6 +20,7 @@ class Essentials(object):
         self.special_check = 0
         self.uno = False
         self.message = "DEALING THE CARDS"
+        self.easy = True
         self.bot_map = {1: "FRIDAY", 2: "EDITH", 3: "JARVIS"}
         self.color = ['Blue', 'Red', 'Green', 'Yellow']
 
