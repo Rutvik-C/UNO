@@ -28,7 +28,7 @@ def create(ob):
     ob.deck2.append(ob.deck1.pop())
     ob.current = ob.deck2[-1]
 
-    for j in range(0, 4):
+    for j in range(4):
         for _ in range(7):
             ob.player_list[j].append(ob.deck1.pop())
 
@@ -107,6 +107,7 @@ def play_this_card_2(ob, color):
 
 
 def bot_action(ob):
+    ob.message = ""
     print("Bot called ->", ob.position)
     ob.played_check = 0
     ob.check = 0
@@ -139,16 +140,16 @@ def bot_action(ob):
                 print("P", ob.position, " played:", item, sep="")
                 ob.special_check = 0
 
-                print(ob.player_list[3])
                 ob.deck2.append(item)
-                print(ob.player_list[3])
 
                 ob.current = peek(ob.deck2)
-                # set_curr_player(ob, False)
 
                 if item[1] == 'Black':
                     new_color = random.choice(ob.color)
                     print("Color changes to:", new_color)
+
+                    ob.message = "%s plays %s %s, new color is %s" % (ob.bot_map[ob.position], item[0], item[1], new_color)
+
                     ob.current = (ob.current[0], new_color)
 
                 ob.player_list[ob.position].remove(item)
@@ -167,6 +168,9 @@ def bot_action(ob):
                     ob.current = peek(ob.deck2)
                     new_color = random.choice(ob.color)
                     print("Color changes to:", new_color)
+
+                    ob.message = "%s plays %s %s, new color is %s" % (ob.bot_map[ob.position], item[0], item[1], new_color)
+
                     ob.current = (ob.current[0], new_color)
                     ob.player_list[ob.position].remove(item)
                     black_check = 1
@@ -183,14 +187,17 @@ def bot_action(ob):
                     print("P", ob.position, " played:", new_card, sep="")
                     new_color = random.choice(ob.color)
                     print("Color changes to:", new_color)
+                    ob.message = "%s plays %s %s, new color is %s" % (ob.bot_map[ob.position], new_card[0], new_card[1], new_color)
+
                     ob.current = (new_card[0], new_color)
                     ob.special_check = 0
                 elif new_card[1] == ob.current[1] or new_card[0] == ob.current[0]:
                     print("P", ob.position, " played:", new_card, sep="")
                     ob.deck2.append(new_card)
+                    ob.current = new_card
                     set_curr_player(ob, False)
                     ob.special_check = 0
                 else:
                     ob.player_list[ob.position].append(new_card)
         if len(ob.player_list[ob.position]) == 1:
-            print("UNO!")
+            ob.message = "%s shouted UNO!" % ob.bot_map[ob.position]

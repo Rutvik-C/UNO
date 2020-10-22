@@ -19,6 +19,8 @@ class Essentials(object):
         self.played_check = 0
         self.special_check = 0
         self.uno = False
+        self.message = "Dealing the cards..."
+        self.bot_map = {1: "FRIDAY", 2: "EDITH", 3: "JARVIS"}
         self.color = ['Blue', 'Red', 'Green', 'Yellow']
 
 
@@ -56,6 +58,8 @@ class Image(object):
         self.help = pygame.image.load("./images/help.png")
         self.win = pygame.image.load("./images/winner.png")
         self.pick_color = pygame.image.load("./images/microsoft.png")
+        self.uno = pygame.image.load("./images/UNO.png")
+        self.uno_button = pygame.image.load("./images/UNOButton.png")
 
 
 class Sound(object):
@@ -70,3 +74,4 @@ class Sound(object):
 class TextFont(object):
     def __init__(self):
         self.pacifico = "./fonts/Pacifico.ttf"
+        self.joe_fin = "./fonts/JosefinSans-Bold.ttf"

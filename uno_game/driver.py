@@ -1,10 +1,8 @@
 from classes import *
 from functions import *
 
-
 # Initialising Pygame
 pygame.init()
-
 
 # Creating Objects
 img = Image()
@@ -14,21 +12,17 @@ sound = Sound()
 fnt = TextFont()
 ess = Essentials()
 
-
 # Creating root window
 root = pygame.display.set_mode((1000, 600))
 root.fill(col.black)
 pygame.display.set_caption('UNO')
 pygame.display.set_icon(img.icon)
 
-
 # Setting up background Music
 pygame.mixer.music.load(sound.back_g)
 pygame.mixer.music.play(-1)  # continuous bg music
 pygame.mixer.music.set_volume(0.3)
-pygame.mixer.music.pause()
-music_on = False
-
+music_on = True
 
 # Setting up initial game variables
 active = True
@@ -41,7 +35,6 @@ disp = False
 
 # Dealing the cards
 create(ess)
-
 
 # Game Loop
 while active:
@@ -89,6 +82,11 @@ while active:
                     music_on = True
 
             if player_playing:  # Card click operations
+                if 850 < m[0] < 916 and 500 < m[1] < 565:  # UNO button
+                    if music_on:
+                        sound.click.play()
+                    ess.uno = True
+
                 if 775 < m[0] < 840 and 505 < m[1] < 570:  # End turn button
                     if music_on:
                         sound.click.play()
@@ -137,22 +135,16 @@ while active:
         # Checking for winner
         for i in ess.player_list:
             if len(i) == 0:
+                play_mode = pm.win
                 winner = ess.player_list.index(i)
                 break
 
-        # Checking for UNO
-        for i in ess.player_list[1:]:
-            if len(i) == 1:
-                # Blit UNO
-                pass
-
-        if len(ess.player_list[0]) == 1 and not ess.uno:
-            pass
-            # MALHAR YOUR FINE WALA ALGO
+        if len(ess.player_list[0]) == 1 and not player_playing and not ess.uno:  # Penalty :)
             ess.player_list[0].append(ess.player_list[1].pop())
             ess.player_list[0].append(ess.player_list[2].pop())
             ess.player_list[0].append(ess.player_list[3].pop())
-            ess.uno=True
+            ess.message = "Penalty!"
+            ess.uno = True
 
         # Initial dealing sounds
         if play_lag == -1 and music_on:
@@ -171,14 +163,17 @@ while active:
         root.blit(img.p3, (55, 440))
         root.blit(img.p4, (675, 490))
 
-        text = pygame.font.Font(fnt.pacifico, 20).render("YOU", True, (255, 238, 46))
-        root.blit(text, [690, 455])
-        text = pygame.font.Font(fnt.pacifico, 20).render("EDITH", True, (255, 238, 46))
-        root.blit(text, [290, -4])
-        text = pygame.font.Font(fnt.pacifico, 20).render("JARVIS", True, (255, 238, 46))
-        root.blit(text, [865, 55])
-        text = pygame.font.Font(fnt.pacifico, 20).render("FRIDAY", True, (255, 238, 46))
-        root.blit(text, [55, 405])
+        text = pygame.font.Font(fnt.joe_fin, 20).render("YOU", True, (255, 238, 46))
+        root.blit(text, [690, 460])
+        text = pygame.font.Font(fnt.joe_fin, 20).render("EDITH", True, (255, 238, 46))
+        root.blit(text, [295, 4])
+        text = pygame.font.Font(fnt.joe_fin, 20).render("JARVIS", True, (255, 238, 46))
+        root.blit(text, [870, 60])
+        text = pygame.font.Font(fnt.joe_fin, 20).render("FRIDAY", True, (255, 238, 46))
+        root.blit(text, [60, 410])
+
+        text = pygame.font.Font(fnt.joe_fin, 20).render(ess.message, True, (255, 238, 46))
+        root.blit(text, [340, 210])
 
         for i in range(len(ess.player_list[1])):
             root.blit(img.card_back_l, (40, 315 - 30 * i))
@@ -187,13 +182,17 @@ while active:
         for i in range(len(ess.player_list[3])):
             root.blit(img.card_back_r, (845, 190 + 30 * i))
         for i in range(len(ess.player_list[0])):
-            root.blit(pygame.image.load("./images/" + ess.player_list[0][i][1] + str(ess.player_list[0][i][0]) + ".png"), (590 - 50 * i, 470))
+            root.blit(
+                pygame.image.load("./images/" + ess.player_list[0][i][1] + str(ess.player_list[0][i][0]) + ".png"),
+                (590 - 50 * i, 470))
 
         if ess.choose_color:
             root.blit(img.pick_color, (468, 400))
 
         # Play conditions
         if player_playing:
+            ess.message = ""
+
             if not ess.drawn and not ess.played:
                 if ess.current[0] == '+2' and ess.special_check == 0:
                     for _ in range(2):
@@ -219,6 +218,7 @@ while active:
 
             root.blit(img.line, (682, 550))
             root.blit(img.done, (775, 505))
+            root.blit(img.uno_button, (850, 500))
 
         else:
             if play_lag == 200:  # Lag Implementation
@@ -231,25 +231,19 @@ while active:
                 # Checking for player played
                 if ess.position == 0:
                     print("Player play")
+                    ess.uno = False
                     player_playing = True
                 else:
                     # Reinitialising Flags
                     ess.played = False
                     ess.drawn = False
 
-                    # bot_play(player - 1)
-                    # ess.player_list[ess.position].pop()
                     bot_action(ess)
 
-                # print("Played: Player #", ess.position)
-                # print()
-
-                # # Calculating next player
-                # set_curr_player(ess)
                 print()
 
-                # if (ess.direction_check == 1 and ess.position != 3) or (ess.direction_check == -1 and ess.position != 1):
-                play_lag = 0
+                if (ess.direction_check == 1 and ess.position != 3) or (ess.direction_check == -1 and ess.position != 1):
+                    play_lag = 0
 
             else:
                 play_lag += 1
@@ -276,12 +270,8 @@ while active:
         string = ""
         if winner == 0:
             string = "Well Done! You've Won this Round!"
-        elif winner == 1:
-            string = "FRIDAY has won this Round!"
-        elif winner == 1:
-            string = "EDITH has won this Round!"
-        elif winner == 1:
-            string = "JARVIS has won this Round!"
+        else:
+            string = "%s has won this Round" % ess.bot_map[winner]
 
         # Rendering and blitting
         root.blit(img.win, (0, 0))
