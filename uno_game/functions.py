@@ -30,7 +30,7 @@ def create(ob):
     ob.current = ob.deck2[-1]
 
     for j in range(4):
-        for _ in range(7):
+        for _ in range(3):
             ob.player_list[j].append(ob.deck1.pop())
 
 def set_curr_player(ob, default):
@@ -151,10 +151,11 @@ def bot_action(ob):
                         d['Black'] = 0
                         for _item in ob.player_list[ob.position]:
                             d[_item[1]] += 1
-                        new_color = max(d, key=d.get)
+                        d=sorted(d.items(), key = lambda kv:(kv[1], kv[0]))
+                        new_color =d[-1][0]
                         print(d,new_color)
                         if new_color == 'Black':
-                            new_color = sorted(d.items(), key = lambda kv:(kv[1], kv[0]))[-2][0]
+                            new_color =d[-2][0]
                             print(d,new_color)
                     else:
                         new_color = random.choice(ob.color)
@@ -186,10 +187,11 @@ def bot_action(ob):
                         d['Black'] = 0
                         for _item in ob.player_list[ob.position]:
                             d[_item[1]] += 1
-                        new_color = max(d, key=d.get)
+                        d=sorted(d.items(), key = lambda kv:(kv[1], kv[0]))
+                        new_color =d[-1][0]
                         print(d,new_color)
                         if new_color == 'Black':
-                            new_color = sorted(d.items(), key = lambda kv:(kv[1], kv[0]))[-2][0]
+                            new_color = d[-2][0]
                             print(d,new_color)
                     else:
                         new_color = random.choice(ob.color)
@@ -222,10 +224,11 @@ def bot_action(ob):
                         d['Black'] = 0
                         for _item in ob.player_list[ob.position]:
                             d[_item[1]] += 1
-                        new_color = max(d, key=d.get)
+                        d=sorted(d.items(), key = lambda kv:(kv[1], kv[0]))
+                        new_color =d[-1][0]
                         print(d,new_color)
                         if new_color == 'Black':
-                            new_color = sorted(d.items(), key = lambda kv:(kv[1], kv[0]))[-2][0]
+                            new_color = d[-2][0]
                             print(d,new_color)
                     else:
                         new_color = random.choice(ob.color)
@@ -245,7 +248,9 @@ def bot_action(ob):
                     ob.player_list[ob.position].append(new_card)
         if len(ob.player_list[ob.position]) == 1:
             if ob.easy:
-                if random.randint(0, 1):
+                var=random.randint(0, 1)
+                if var:
+                    print(var)
                     ob.uno[ob.position] = True
                     ob.message = "%s shouted UNO!" % ob.bot_map[ob.position]
             else:
