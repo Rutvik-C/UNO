@@ -23,6 +23,9 @@ class Essentials(object):
         self.easy = True
         self.bot_map = {1: "FRIDAY", 2: "EDITH", 3: "JARVIS"}
         self.color = ['Blue', 'Red', 'Green', 'Yellow']
+        self.player_playing = False
+        self.winner = -1
+        self.play_lag = -1
 
 
 class PlayMode(object):

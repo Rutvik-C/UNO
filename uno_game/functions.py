@@ -48,10 +48,9 @@ def set_curr_player(ob, default):
 
 
 def re_initialize(ob):
-    global winner, player_playing, play_lag
-    winner = -1
-    player_playing = False
-    play_lag = -1
+    ob.winner = -1
+    ob.player_playing = False
+    ob.play_lag = -1
     ob.p1 = list()
     ob.p2 = list()
     ob.p3 = list()
@@ -63,6 +62,9 @@ def re_initialize(ob):
     ob.position = -1
     ob.special_check = 0
     ob.current = tuple()
+    ob.drawn, ob.played, ob.choose_color = False, False, False
+    ob.uno = [True] * 4
+    ob.easy = True
 
     # Dealing the cards
     create(ob)

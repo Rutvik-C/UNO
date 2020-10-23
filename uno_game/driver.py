@@ -27,9 +27,6 @@ music_on = True
 # Setting up initial game variables
 active = True  # While game is ON this variable is True
 play_mode = pm.load
-winner = -1
-player_playing = False
-play_lag = -1
 
 disp = False
 win_dec = False
@@ -73,6 +70,7 @@ while active:
             if 10 < m[0] < 42 and 10 < m[1] < 42 and (play_mode == pm.in_game or play_mode == pm.info):  # Back Button
                 if music_on:
                     sound.click.play()
+                re_initialize(ess)
                 play_mode = pm.load
 
             if 420 < m[0] < 555 and 425 < m[1] < 543 and play_mode == pm.win:  # Home Button
@@ -91,7 +89,7 @@ while active:
                     pygame.mixer.music.unpause()
                     music_on = True
 
-            if player_playing:  # Card click operations
+            if ess.player_playing:  # Card click operations
                 if 850 < m[0] < 916 and 500 < m[1] < 565:  # UNO button
                     if music_on:
                         sound.uno.play()
@@ -101,7 +99,7 @@ while active:
                 if 775 < m[0] < 840 and 505 < m[1] < 570:  # End turn button
                     if music_on:
                         sound.click.play()
-                    player_playing = False
+                    ess.player_playing = False
 
                 for i in range(625, 625 - 50 * len(ess.player_list[0]), -50):
                     if i < m[0] < i + 50 and 470 < m[1] < 585:
@@ -158,11 +156,11 @@ while active:
         for i in ess.player_list:
             if len(i) == 0:
                 win_dec = True
-                winner = ess.player_list.index(i)
+                ess.winner = ess.player_list.index(i)
                 break
 
         # Initial dealing sounds
-        if play_lag == -1 and music_on:
+        if ess.play_lag == -1 and music_on:
             sound.shuffled.play()
 
         # Blitting essential Images
@@ -208,7 +206,7 @@ while active:
             root.blit(img.yellow, (560, 390))
 
         # Play conditions
-        if player_playing:
+        if ess.player_playing:
             ess.message = ""
 
             if not ess.drawn and not ess.played:
@@ -222,7 +220,7 @@ while active:
                             ess.player_list[0].append(ess.deck1.pop())
                     print("Draw", ess.current[0])
                     ess.special_check = 1
-                    player_playing = False
+                    ess.player_playing = False
                 elif ess.current[0] == '+4' and ess.special_check == 0:
                     for _ in range(4):
                         try:
@@ -232,14 +230,14 @@ while active:
                             random.shuffle(ess.deck1)
                             ess.player_list[0].append(ess.deck1.pop())
                     ess.special_check = 1
-                    player_playing = False
+                    ess.player_playing = False
 
             root.blit(img.line, (682, 550))
             root.blit(img.done, (775, 505))
             root.blit(img.uno_button, (850, 500))
 
         else:
-            if play_lag == 200:  # Lag Implementation
+            if ess.play_lag == 200:  # Lag Implementation
                 disp = False
                 pen_check = False
 
@@ -251,7 +249,7 @@ while active:
                 if ess.position == 0:
                     print("Player play")
                     ess.uno[0] = False
-                    player_playing = True
+                    ess.player_playing = True
 
                 else:
                     # Reinitialising Flags
@@ -265,10 +263,10 @@ while active:
                 # for i in ess.player_list:
 
                 # if (ess.direction_check == 1 and ess.position != 3) or (ess.direction_check == -1 and ess.position != 1):
-                play_lag = 0
+                ess.play_lag = 0
 
             else:
-                if win_dec and play_lag == 100:
+                if win_dec and ess.play_lag == 100:
                     play_mode = pm.win
 
                 if not pen_check:
@@ -287,7 +285,7 @@ while active:
                               ess.player_list[3])
                     pen_check = True
 
-                play_lag += 1
+                ess.play_lag += 1
 
                 if not disp:
                     print("\n*** %d ***\n*** gen=%d ***\n" % (ess.position, (ess.position + ess.direction_check) % 4))
@@ -309,15 +307,14 @@ while active:
     # WIN SCREEN
     elif play_mode == pm.win:
         string = ""
-        if winner == 0:
+        if ess.winner == 0:
             string = "Well Done! You've Won this Round!"
         else:
-            string = "%s has won this Round" % ess.bot_map[winner]
+            string = "%s has won this Round" % ess.bot_map[ess.winner]
 
         # Rendering and blitting
         root.blit(img.win, (0, 0))
         text = pygame.font.Font(fnt.pacifico, 40).render(string, True, (255, 238, 46))
-        # text = pygame.transform.rotate(text, 4)
         root.blit(text, [190, 100])
 
     # Music toggle button
