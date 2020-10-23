@@ -260,9 +260,6 @@ while active:
 
                 print()
 
-                # for i in ess.player_list:
-
-                # if (ess.direction_check == 1 and ess.position != 3) or (ess.direction_check == -1 and ess.position != 1):
                 ess.play_lag = 0
 
             else:
