@@ -140,12 +140,27 @@ def bot_action(ob):
                 ob.current = peek(ob.deck2)
 
                 if item[1] == 'Black':
-                    new_color = random.choice(ob.color)
+                    ob.special_check = 0
+                    ob.deck2.append(item)
+                    ob.current = peek(ob.deck2)
+                    if not ob.easy:
+                        d = dict()
+                        d['Blue'] = 0
+                        d['Green'] = 0
+                        d['Yellow'] = 0
+                        d['Red'] = 0
+                        d['Black'] = 0
+                        for _item in ob.player_list[ob.position]:
+                            d[_item[1]] += 1
+                        new_color = max(d, key=d.get)
+                        if new_color == 'Black':
+                            new_color = random.choice(ob.color)
+                    else:
+                        new_color = random.choice(ob.color)
                     print("Color changes to:", new_color)
                     ob.message = "%s plays %s %s, new color is %s" % (
                         ob.bot_map[ob.position], item[0], item[1], new_color)
                     ob.current = (ob.current[0], new_color)
-
                 ob.player_list[ob.position].remove(item)
 
                 set_curr_player(ob, False)
