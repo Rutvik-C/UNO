@@ -20,7 +20,8 @@ def create(ob):
     random.shuffle(ob.deck1)
 
     for i in range(3):
-        while peek(ob.deck1) in [('Wild', 'Black'), ('+4', 'Black'), ('Skip', 'Red'), ('Skip', 'Green'), ('Skip', 'Blue'),
+        while peek(ob.deck1) in [('Wild', 'Black'), ('+4', 'Black'), ('Skip', 'Red'), ('Skip', 'Green'),
+                                 ('Skip', 'Blue'),
                                  ('Skip', 'Yellow'), ('Reverse', 'Red'), ('Reverse', 'Green'), ('Reverse', 'Blue'),
                                  ('Reverse', 'Yellow'), ('+2', 'Red'), ('+2', 'Green'), ('+2', 'Blue'),
                                  ('+2', 'Yellow')]:
@@ -29,9 +30,10 @@ def create(ob):
     ob.deck2.append(ob.deck1.pop())
     ob.current = ob.deck2[-1]
 
-    for j in range(4):
-        for _ in range(3):
+    for j in range(1, 3):
+        for _ in range(7):
             ob.player_list[j].append(ob.deck1.pop())
+
 
 def set_curr_player(ob, default):
     if ob.current[0] == 'Reverse' and ob.special_check == 0:
@@ -60,7 +62,7 @@ def re_initialize(ob):
     ob.direction_check = 1
     ob.position = -1
     ob.special_check = 0
-    ob.current = list()
+    ob.current = tuple()
 
     # Dealing the cards
     create(ob)
@@ -74,6 +76,7 @@ def take_from_stack(ob):
 
 def play_this_card(ob, card):
     if not ob.played:
+        print(card)
         if card[0] == ob.current[0] or card[1] == ob.current[1]:
             print("Player played ->", card, "\n")
             ob.played, ob.drawn = True, True
@@ -113,7 +116,10 @@ def bot_action(ob):
                 ob.deck1, ob.deck2 = ob.deck2, ob.deck1
                 random.shuffle(ob.deck1)
                 ob.player_list[ob.position].append(ob.deck1.pop())
+
         print("Draw", ob.current[0])
+        ob.message = "%s Draws 2 cards" % ob.bot_map[ob.position]
+
         ob.played_check = 1
         ob.special_check = 1
     elif ob.current[0] == '+4' and ob.special_check == 0:
@@ -124,6 +130,8 @@ def bot_action(ob):
                 ob.deck1, ob.deck2 = ob.deck2, ob.deck1
                 random.shuffle(ob.deck1)
                 ob.player_list[ob.position].append(ob.deck1.pop())
+
+        ob.message = "%s Draws 4 cards" % ob.bot_map[ob.position]
         ob.played_check = 1
         ob.special_check = 1
 
@@ -151,12 +159,12 @@ def bot_action(ob):
                         d['Black'] = 0
                         for _item in ob.player_list[ob.position]:
                             d[_item[1]] += 1
-                        d=sorted(d.items(), key = lambda kv:(kv[1], kv[0]))
-                        new_color =d[-1][0]
-                        print(d,new_color)
+                        d = sorted(d.items(), key=lambda kv: (kv[1], kv[0]))
+                        new_color = d[-1][0]
+                        print(d, new_color)
                         if new_color == 'Black':
-                            new_color =d[-2][0]
-                            print(d,new_color)
+                            new_color = d[-2][0]
+                            print(d, new_color)
                     else:
                         new_color = random.choice(ob.color)
                     print("Color changes to:", new_color)
@@ -175,6 +183,8 @@ def bot_action(ob):
             for item in ob.player_list[ob.position]:
                 if 'Black' in item:
                     print("2: P", ob.position, " played:", item, sep="")
+                    ob.message = "%s plays %s" % (ob.bot_map[ob.position], item[0] + " " + item[1])
+
                     ob.special_check = 0
                     ob.deck2.append(item)
                     ob.current = peek(ob.deck2)
@@ -187,12 +197,12 @@ def bot_action(ob):
                         d['Black'] = 0
                         for _item in ob.player_list[ob.position]:
                             d[_item[1]] += 1
-                        d=sorted(d.items(), key = lambda kv:(kv[1], kv[0]))
-                        new_color =d[-1][0]
-                        print(d,new_color)
+                        d = sorted(d.items(), key=lambda kv: (kv[1], kv[0]))
+                        new_color = d[-1][0]
+                        print(d, new_color)
                         if new_color == 'Black':
                             new_color = d[-2][0]
-                            print(d,new_color)
+                            print(d, new_color)
                     else:
                         new_color = random.choice(ob.color)
 
@@ -215,6 +225,8 @@ def bot_action(ob):
                     new_card = (ob.deck1.pop())
                 if new_card[1] == 'Black':
                     print("3: P", ob.position, " played:", new_card, sep="")
+                    ob.message = "%s plays %s" % (ob.bot_map[ob.position], new_card[0] + " " + new_card[1])
+
                     if not ob.easy:
                         d = dict()
                         d['Blue'] = 0
@@ -224,12 +236,12 @@ def bot_action(ob):
                         d['Black'] = 0
                         for _item in ob.player_list[ob.position]:
                             d[_item[1]] += 1
-                        d=sorted(d.items(), key = lambda kv:(kv[1], kv[0]))
-                        new_color =d[-1][0]
-                        print(d,new_color)
+                        d = sorted(d.items(), key=lambda kv: (kv[1], kv[0]))
+                        new_color = d[-1][0]
+                        print(d, new_color)
                         if new_color == 'Black':
                             new_color = d[-2][0]
-                            print(d,new_color)
+                            print(d, new_color)
                     else:
                         new_color = random.choice(ob.color)
                     # new_color = random.choice(ob.color)  # comment this and uncomment previous
@@ -248,7 +260,7 @@ def bot_action(ob):
                     ob.player_list[ob.position].append(new_card)
         if len(ob.player_list[ob.position]) == 1:
             if ob.easy:
-                var=random.randint(0, 1)
+                var = random.randint(0, 1)
                 if var:
                     print(var)
                     ob.uno[ob.position] = True

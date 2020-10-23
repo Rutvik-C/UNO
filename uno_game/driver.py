@@ -33,6 +33,7 @@ play_lag = -1
 
 disp = False
 win_dec = False
+pen_check = False
 
 # Dealing the cards
 create(ess)
@@ -161,21 +162,6 @@ while active:
                 winner = ess.player_list.index(i)
                 break
 
-        if not win_dec:
-            for i in ess.player_list:
-                if len(i) == 1 and not player_playing and not ess.uno[ess.player_list.index(i)]:  # Penalty
-                    print("PENALTY TO", ess.player_list.index(i), "\nBefore", ess.player_list[0], "\n", ess.player_list[1], "\n", ess.player_list[2], "\n", ess.player_list[3])
-                    for j in range(4):
-                        if ess.player_list.index(i) != j:
-                            try:
-                                ess.player_list[ess.player_list.index(i)].append(ess.player_list[j].pop())
-                            except:
-                                pass
-                    ess.message = "Penalty!"
-                    ess.uno[ess.player_list.index(i)] = True
-                    print("After", ess.player_list[0], "\n", ess.player_list[1], "\n", ess.player_list[2], "\n", ess.player_list[3])
-                    break
-
         # Initial dealing sounds
         if play_lag == -1 and music_on:
             sound.shuffled.play()
@@ -256,6 +242,7 @@ while active:
         else:
             if play_lag == 200:  # Lag Implementation
                 disp = False
+                pen_check = False
 
                 # Calculating next player
                 set_curr_player(ess, True)
@@ -266,6 +253,7 @@ while active:
                     print("Player play")
                     ess.uno[0] = False
                     player_playing = True
+
                 else:
                     # Reinitialising Flags
                     ess.played = False
@@ -275,10 +263,28 @@ while active:
 
                 print()
 
+                # for i in ess.player_list:
+
                 # if (ess.direction_check == 1 and ess.position != 3) or (ess.direction_check == -1 and ess.position != 1):
                 play_lag = 0
 
             else:
+                if not pen_check:
+                    print("Pre penalty:", ess.position, ess.player_list[ess.position], ess.uno[ess.position])
+                    if ess.position != -1 and len(ess.player_list[ess.position]) == 1 and not ess.uno[
+                       ess.position]:  # Penalty
+                        print("PENALTY TO", ess.position, "\nBefore", ess.player_list[0], "\n",
+                              ess.player_list[1], "\n", ess.player_list[2], "\n", ess.player_list[3])
+                        for j in range(4):
+                            if ess.position != j:
+                                ess.player_list[ess.position].append(ess.player_list[j].pop())
+
+                        ess.message = "Penalty!"
+                        ess.uno[ess.position] = True
+                        print("After", ess.player_list[0], "\n", ess.player_list[1], "\n", ess.player_list[2], "\n",
+                              ess.player_list[3])
+                    pen_check = True
+
                 play_lag += 1
 
                 if not disp:

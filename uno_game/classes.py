@@ -76,7 +76,6 @@ class Sound(object):
         self.shuffled = pygame.mixer.Sound('./sound/shuffle.wav')
 
 
-        
 class TextFont(object):
     def __init__(self):
         self.pacifico = "./fonts/Pacifico.ttf"
