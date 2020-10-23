@@ -94,7 +94,8 @@ while active:
             if player_playing:  # Card click operations
                 if 850 < m[0] < 916 and 500 < m[1] < 565:  # UNO button
                     if music_on:
-                        sound.click.play()
+                        sound.uno.play()
+
                     ess.uno[0] = True
 
                 if 775 < m[0] < 840 and 505 < m[1] < 570:  # End turn button
@@ -257,7 +258,7 @@ while active:
                     ess.played = False
                     ess.drawn = False
 
-                    bot_action(ess)
+                    bot_action(ess, sound)
 
                 print()
 

@@ -74,6 +74,7 @@ class Sound(object):
         self.card_drawn = pygame.mixer.Sound('./sound/card_drawn.wav')
         self.card_played = pygame.mixer.Sound('./sound/card_played.wav')
         self.shuffled = pygame.mixer.Sound('./sound/shuffle.wav')
+        self.uno = pygame.mixer.Sound("./sound/uno.wav")
 
 
 class TextFont(object):

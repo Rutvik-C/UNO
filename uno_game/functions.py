@@ -102,7 +102,7 @@ def play_this_card_2(ob, color):
     ob.special_check = 0
 
 
-def bot_action(ob):
+def bot_action(ob, sounds):
     ob.message = ""
     ob.uno[ob.position] = False
     print("Bot called ->", ob.position)
@@ -265,7 +265,10 @@ def bot_action(ob):
                     print(var)
                     ob.uno[ob.position] = True
                     ob.message = "%s shouted UNO!" % ob.bot_map[ob.position]
+                    sounds.uno.play()
             else:
                 ob.uno[ob.position] = True
                 ob.message = "%s shouted UNO!" % ob.bot_map[ob.position]
+                sounds.uno.play()
+
             # ob.message = "%s shouted UNO!" % ob.bot_map[ob.position]  # comment this and uncomment previous
