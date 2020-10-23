@@ -25,7 +25,7 @@ pygame.mixer.music.set_volume(0.3)
 music_on = True
 
 # Setting up initial game variables
-active = True
+active = True  # While game is ON this variable is True
 play_mode = pm.load
 winner = -1
 player_playing = False
@@ -156,9 +156,7 @@ while active:
         # Checking for winner
         for i in ess.player_list:
             if len(i) == 0:
-                print(ess.player_list)
                 win_dec = True
-                play_mode = pm.win
                 winner = ess.player_list.index(i)
                 break
 
@@ -269,6 +267,9 @@ while active:
                 play_lag = 0
 
             else:
+                if win_dec and play_lag == 100:
+                    play_mode = pm.win
+
                 if not pen_check:
                     print("Pre penalty:", ess.position, ess.player_list[ess.position], ess.uno[ess.position])
                     if ess.position != -1 and len(ess.player_list[ess.position]) == 1 and not ess.uno[

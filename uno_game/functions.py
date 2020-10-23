@@ -30,7 +30,7 @@ def create(ob):
     ob.deck2.append(ob.deck1.pop())
     ob.current = ob.deck2[-1]
 
-    for j in range(1, 3):
+    for j in range(4):
         for _ in range(7):
             ob.player_list[j].append(ob.deck1.pop())
 
@@ -141,10 +141,10 @@ def bot_action(ob):
             if ob.current[1] in item or ob.current[0] in item:
                 print("1: P", ob.position, " played:", item, sep="")
                 ob.special_check = 0
-
                 ob.deck2.append(item)
-
                 ob.current = peek(ob.deck2)
+
+                ob.message = "%s plays card %s" % (ob.bot_map[ob.position], ob.current[1] + " " + ob.current[0])
 
                 if item[1] == 'Black':
                     ob.special_check = 0
