@@ -18,7 +18,7 @@ class Essentials(object):
         self.choose_color = False
         self.played_check = 0
         self.special_check = 0
-        self.uno = False
+        self.uno = [True] * 4
         self.message = "DEALING THE CARDS"
         self.easy = True
         self.bot_map = {1: "FRIDAY", 2: "EDITH", 3: "JARVIS"}
@@ -61,6 +61,10 @@ class Image(object):
         self.pick_color = pygame.image.load("./images/microsoft.png")
         self.uno = pygame.image.load("./images/UNO.png")
         self.uno_button = pygame.image.load("./images/UNOButton.png")
+        self.red = pygame.image.load("./images/SmallRed.png")
+        self.blue = pygame.image.load("./images/SmallBlue.png")
+        self.yellow = pygame.image.load("./images/SmallYellow.png")
+        self.green = pygame.image.load("./images/SmallGreen.png")
 
 
 class Sound(object):

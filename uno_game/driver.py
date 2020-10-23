@@ -32,6 +32,7 @@ player_playing = False
 play_lag = -1
 
 disp = False
+win_dec = False
 
 # Dealing the cards
 create(ess)
@@ -49,6 +50,14 @@ while active:
         # Mouse click Check
         if inp.type == pygame.MOUSEBUTTONDOWN:
             m = pygame.mouse.get_pos()
+
+            if ((20 < m[0] < 55 or 210 < m[0] < 245) and 150 < m[1] < 180) and play_mode == pm.load:  # Left Right Button
+                if music_on:
+                    sound.click.play()
+                if ess.easy:
+                    ess.easy = False
+                else:
+                    ess.easy = True
 
             if 0 < m[0] < 265 and 205 < m[1] < 270 and play_mode == pm.load:  # Play Button
                 if music_on:
@@ -85,7 +94,7 @@ while active:
                 if 850 < m[0] < 916 and 500 < m[1] < 565:  # UNO button
                     if music_on:
                         sound.click.play()
-                    ess.uno = True
+                    ess.uno[0] = True
 
                 if 775 < m[0] < 840 and 505 < m[1] < 570:  # End turn button
                     if music_on:
@@ -104,22 +113,23 @@ while active:
                         sound.card_drawn.play()
 
             if ess.choose_color:
-                if 468 < m[0] < 500 and 400 < m[1] < 432:  # Red Button
+
+                if 395 < m[0] < 440 and 390 < m[1] < 450:  # Red Button
                     ess.choose_color = False
                     play_this_card_2(ess, "Red")
                     if music_on:
                         sound.click.play()
-                if 500 < m[0] < 532 and 400 < m[1] < 432:  # Green Button
+                if 450 < m[0] < 495 and 390 < m[1] < 450:  # Green Button
                     ess.choose_color = False
                     play_this_card_2(ess, "Green")
                     if music_on:
                         sound.click.play()
-                if 468 < m[0] < 500 and 432 < m[1] < 464:  # Blue Button
+                if 505 < m[0] < 550 and 390 < m[1] < 450:  # Blue Button
                     ess.choose_color = False
                     play_this_card_2(ess, "Blue")
                     if music_on:
                         sound.click.play()
-                if 500 < m[0] < 532 and 432 < m[1] < 464:  # Yellow Button
+                if 560 < m[0] < 605 and 390 < m[1] < 450:  # Yellow Button
                     ess.choose_color = False
                     play_this_card_2(ess, "Yellow")
                     if music_on:
@@ -129,15 +139,15 @@ while active:
     if play_mode == pm.load:
         root.blit(img.load, (0, 0))
         text = pygame.font.Font(fnt.joe_fin, 50).render("<", True, (255, 238, 46))
-        root.blit(text, [20, 150])
+        root.blit(text, [20, 140])
         text = pygame.font.Font(fnt.joe_fin, 50).render(">", True, (255, 238, 46))
-        root.blit(text, [60, 150])
+        root.blit(text, [220, 140])
         if ess.easy:
-            text = pygame.font.Font(fnt.joe_fin, 50).render("FRIDAY", True, (255, 238, 46))
-            root.blit(text, [60, 410])
+            text = pygame.font.Font(fnt.joe_fin, 30).render("EASY", True, (255, 238, 46))
+            root.blit(text, [93, 153])
         else:
-            text = pygame.font.Font(fnt.joe_fin, 50).render("FRIDAY", True, (255, 238, 46))
-            root.blit(text, [60, 410])
+            text = pygame.font.Font(fnt.joe_fin, 30).render("HARD", True, (255, 238, 46))
+            root.blit(text, [93, 153])
 
     # PLAYING MODE SCREEN
     elif play_mode == pm.in_game:
@@ -145,16 +155,26 @@ while active:
         # Checking for winner
         for i in ess.player_list:
             if len(i) == 0:
+                print(ess.player_list)
+                win_dec = True
                 play_mode = pm.win
                 winner = ess.player_list.index(i)
                 break
 
-        if len(ess.player_list[0]) == 1 and not player_playing and not ess.uno:  # Penalty :)
-            ess.player_list[0].append(ess.player_list[1].pop())
-            ess.player_list[0].append(ess.player_list[2].pop())
-            ess.player_list[0].append(ess.player_list[3].pop())
-            ess.message = "Penalty!"
-            ess.uno = True
+        if not win_dec:
+            for i in ess.player_list:
+                if len(i) == 1 and not player_playing and not ess.uno[ess.player_list.index(i)]:  # Penalty
+                    print("PENALTY TO", ess.player_list.index(i), "\nBefore", ess.player_list[0], "\n", ess.player_list[1], "\n", ess.player_list[2], "\n", ess.player_list[3])
+                    for j in range(4):
+                        if ess.player_list.index(i) != j:
+                            try:
+                                ess.player_list[ess.player_list.index(i)].append(ess.player_list[j].pop())
+                            except:
+                                pass
+                    ess.message = "Penalty!"
+                    ess.uno[ess.player_list.index(i)] = True
+                    print("After", ess.player_list[0], "\n", ess.player_list[1], "\n", ess.player_list[2], "\n", ess.player_list[3])
+                    break
 
         # Initial dealing sounds
         if play_lag == -1 and music_on:
@@ -197,7 +217,10 @@ while active:
                 (590 - 50 * i, 470))
 
         if ess.choose_color:
-            root.blit(img.pick_color, (468, 400))
+            root.blit(img.red, (395, 390))
+            root.blit(img.green, (450, 390))
+            root.blit(img.blue, (505, 390))
+            root.blit(img.yellow, (560, 390))
 
         # Play conditions
         if player_playing:
@@ -241,7 +264,7 @@ while active:
                 # Checking for player played
                 if ess.position == 0:
                     print("Player play")
-                    ess.uno = False
+                    ess.uno[0] = False
                     player_playing = True
                 else:
                     # Reinitialising Flags

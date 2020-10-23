@@ -19,11 +19,12 @@ def create(ob):
         ob.deck1.append(('+4', 'Black'))
     random.shuffle(ob.deck1)
 
-    while peek(ob.deck1) in [('Wild', 'Black'), ('+4', 'Black'), ('Skip', 'Red'), ('Skip', 'Green'), ('Skip', 'Blue'),
-                             ('Skip', 'Yellow'), ('Reverse', 'Red'), ('Reverse', 'Green'), ('Reverse', 'Blue'),
-                             ('Reverse', 'Yellow'), ('+2', 'Red'), ('+2', 'Green'), ('+2', 'Blue'),
-                             ('+2', 'Yellow')]:
-        random.shuffle(ob.deck1)
+    for i in range(3):
+        while peek(ob.deck1) in [('Wild', 'Black'), ('+4', 'Black'), ('Skip', 'Red'), ('Skip', 'Green'), ('Skip', 'Blue'),
+                                 ('Skip', 'Yellow'), ('Reverse', 'Red'), ('Reverse', 'Green'), ('Reverse', 'Blue'),
+                                 ('Reverse', 'Yellow'), ('+2', 'Red'), ('+2', 'Green'), ('+2', 'Blue'),
+                                 ('+2', 'Yellow')]:
+            random.shuffle(ob.deck1)
 
     ob.deck2.append(ob.deck1.pop())
     ob.current = ob.deck2[-1]
@@ -31,9 +32,6 @@ def create(ob):
     for j in range(4):
         for _ in range(7):
             ob.player_list[j].append(ob.deck1.pop())
-
-    ob.player_list[2] = [('Wild', 'Black'), ('+4', 'Black')]
-    ob.player_list[3] = [('Wild', 'Black'), ('+4', 'Black')]
 
 
 def set_curr_player(ob, default):
@@ -82,28 +80,21 @@ def play_this_card(ob, card):
             ob.played, ob.drawn = True, True
             ob.deck2.append(card)
             ob.current = peek(ob.deck2)
-            ob.p1.remove(ob.current)
+            ob.player_list[0].remove(ob.current)
             ob.special_check = 0
             set_curr_player(ob, False)
 
         if card[1] == 'Black':
             ob.played, ob.drawn = True, True
             ob.choose_color = True
-            ob.p1.remove(card)
-
+            ob.player_list[0].remove(card)
+            print("In here")
             ob.deck2.append(card)
-            # new_color = input()
-            # print("new color is:", new_color)
-            # ob.p1.remove(card)
-            # card = (card[0], new_color)
-            # ob.deck2.append(card)
-            # ob.current = peek(ob.deck2)
-            # ob.special_check = 0
 
 
 def play_this_card_2(ob, color):
     print("new color is:", color)
-    # card = ("", color)
+    print("In here 2")
     ob.deck2[-1] = (ob.deck2[-1][0], color)
     ob.current = peek(ob.deck2)
     ob.special_check = 0
@@ -111,6 +102,7 @@ def play_this_card_2(ob, color):
 
 def bot_action(ob):
     ob.message = ""
+    ob.uno[ob.position] = False
     print("Bot called ->", ob.position)
     ob.played_check = 0
     ob.check = 0
@@ -139,7 +131,7 @@ def bot_action(ob):
     if ob.played_check == 0:
         check = 0
         for item in ob.player_list[ob.position]:
-            if ob.current[1] in item or ob.current[0] in item:  # removed or item[1]=="Black"
+            if ob.current[1] in item or ob.current[0] in item:
                 print("1: P", ob.position, " played:", item, sep="")
                 ob.special_check = 0
 
@@ -150,7 +142,8 @@ def bot_action(ob):
                 if item[1] == 'Black':
                     new_color = random.choice(ob.color)
                     print("Color changes to:", new_color)
-                    ob.message = "%s plays %s %s, new color is %s" % (ob.bot_map[ob.position], item[0], item[1], new_color)
+                    ob.message = "%s plays %s %s, new color is %s" % (
+                        ob.bot_map[ob.position], item[0], item[1], new_color)
                     ob.current = (ob.current[0], new_color)
 
                 ob.player_list[ob.position].remove(item)
@@ -167,21 +160,22 @@ def bot_action(ob):
                     ob.special_check = 0
                     ob.deck2.append(item)
                     ob.current = peek(ob.deck2)
-                    #if !ess.easy:
-                    #	d=dict()
-                    #	d['Blue']=0
-                    #	d['Green']=0
-                    #	d['Yellow']=0
-                    #	d['Red']=0
-                    #	d['Black']=0
-                    #	for item in ess.player_list[i]:
-                    #		d[item[1]]+=1
-                    #	new_color = max(d, key=d.get)
-                    #	if newcolor='Black':
-                    #		new_color = random.choice(ob.color)
-                    #else:
-                    #   new_color = random.choice(ob.color)
-                    new_color = random.choice(ob.color)#comment this and uncomment previous
+                    if not ob.easy:
+                        d = dict()
+                        d['Blue'] = 0
+                        d['Green'] = 0
+                        d['Yellow'] = 0
+                        d['Red'] = 0
+                        d['Black'] = 0
+                        for _item in ob.player_list[ob.position]:
+                            d[_item[1]] += 1
+                        new_color = max(d, key=d.get)
+                        if new_color == 'Black':
+                            new_color = random.choice(ob.color)
+                    else:
+                        new_color = random.choice(ob.color)
+
+                    # new_color = random.choice(ob.color)  # comment this and uncomment previous
                     print("Color changes to:", new_color)
 
                     ob.message = "%s plays %s, new color is %s" % (ob.bot_map[ob.position], item[0], new_color)
@@ -200,21 +194,21 @@ def bot_action(ob):
                     new_card = (ob.deck1.pop())
                 if new_card[1] == 'Black':
                     print("3: P", ob.position, " played:", new_card, sep="")
-                    #if !ess.easy:
-                    #	d=dict()
-                    #	d['Blue']=0
-                    #	d['Green']=0
-                    #	d['Yellow']=0
-                    #	d['Red']=0
-                    #	d['Black']=0
-                    #	for item in ess.player_list[i]:
-                    #		d[item[1]]+=1
-                    #	new_color = max(d, key=d.get)
-                    #	if newcolor='Black':
-                    #		new_color = random.choice(ob.color)
-                #else:
-                 #   new_color = random.choice(ob.color)
-                    new_color = random.choice(ob.color)#comment this and uncomment previous
+                    if not ob.easy:
+                        d = dict()
+                        d['Blue'] = 0
+                        d['Green'] = 0
+                        d['Yellow'] = 0
+                        d['Red'] = 0
+                        d['Black'] = 0
+                        for _item in ob.player_list[ob.position]:
+                            d[_item[1]] += 1
+                        new_color = max(d, key=d.get)
+                        if new_color == 'Black':
+                            new_color = random.choice(ob.color)
+                    else:
+                        new_color = random.choice(ob.color)
+                    # new_color = random.choice(ob.color)  # comment this and uncomment previous
                     print("Color changes to:", new_color)
                     ob.message = "%s plays %s, new color is %s" % (ob.bot_map[ob.position], new_card[0], new_color)
 
@@ -229,8 +223,11 @@ def bot_action(ob):
                 else:
                     ob.player_list[ob.position].append(new_card)
         if len(ob.player_list[ob.position]) == 1:
-            #if ess.easy:
-            #   if(random.randint(0,1)):
-            #      set_uno_flag=True
-            #      ob.message = "%s shouted UNO!" % ob.bot_map[ob.position]
-            ob.message = "%s shouted UNO!" % ob.bot_map[ob.position]#comment this and uncomment previous
+            if ob.easy:
+                if random.randint(0, 1):
+                    ob.uno[ob.position] = True
+                    ob.message = "%s shouted UNO!" % ob.bot_map[ob.position]
+            else:
+                ob.uno[ob.position] = True
+                ob.message = "%s shouted UNO!" % ob.bot_map[ob.position]
+            # ob.message = "%s shouted UNO!" % ob.bot_map[ob.position]  # comment this and uncomment previous
