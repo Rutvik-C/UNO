@@ -30,10 +30,6 @@ def create(ob):
         for _ in range(7):
             ob.player_list[j].append(ob.deck1.pop())
 
-    ob.player_list[0] = [('Wild', 'Black'), ('+4', 'Black'), ('Skip', 'Red'), ('Skip', 'Green'),
-                         ('Skip', 'Blue'), ('Skip', 'Yellow')]
-    ob.player_list[3] = [('Wild', 'Black'), ('+4', 'Black')]
-
 
 def set_curr_player(ob, default):
     if ob.current[0] == 'Reverse' and ob.special_check == 0:
