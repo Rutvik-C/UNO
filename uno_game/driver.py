@@ -26,7 +26,7 @@ music_on = True
 
 # Setting up initial game variables
 active = True  # While game is ON this variable is True
-play_mode = pm.load
+ess.play_mode = pm.load
 
 disp = False
 win_dec = False
@@ -49,7 +49,7 @@ while active:
         if inp.type == pygame.MOUSEBUTTONDOWN:
             m = pygame.mouse.get_pos()
 
-            if ((20 < m[0] < 55 or 210 < m[0] < 245) and 150 < m[1] < 180) and play_mode == pm.load:  # Left Right Button
+            if ((20 < m[0] < 55 or 210 < m[0] < 245) and 150 < m[1] < 180) and ess.play_mode == pm.load:  # Left Right Button
                 if music_on:
                     sound.click.play()
                 if ess.easy:
@@ -57,27 +57,27 @@ while active:
                 else:
                     ess.easy = True
 
-            if 0 < m[0] < 265 and 205 < m[1] < 270 and play_mode == pm.load:  # Play Button
+            if 0 < m[0] < 265 and 205 < m[1] < 270 and ess.play_mode == pm.load:  # Play Button
                 if music_on:
                     sound.click.play()
-                play_mode = pm.in_game
+                ess.play_mode = pm.in_game
 
-            if 0 < m[0] < 265 and 340 < m[1] < 405 and play_mode == pm.load:  # Info Button
+            if 0 < m[0] < 265 and 340 < m[1] < 405 and ess.play_mode == pm.load:  # Info Button
                 if music_on:
                     sound.click.play()
-                play_mode = pm.info
+                ess.play_mode = pm.info
 
-            if 10 < m[0] < 42 and 10 < m[1] < 42 and (play_mode == pm.in_game or play_mode == pm.info):  # Back Button
+            if 10 < m[0] < 42 and 10 < m[1] < 42 and (ess.play_mode == pm.in_game or ess.play_mode == pm.info):  # Back Button
                 if music_on:
                     sound.click.play()
                 re_initialize(ess)
-                play_mode = pm.load
+                ess.play_mode = pm.load
 
-            if 420 < m[0] < 555 and 425 < m[1] < 543 and play_mode == pm.win:  # Home Button
+            if 420 < m[0] < 555 and 425 < m[1] < 543 and ess.play_mode == pm.win:  # Home Button
                 if music_on:
                     sound.click.play()
                 re_initialize(ess)
-                play_mode = pm.load
+                ess.play_mode = pm.load
 
             if 960 < m[0] < 1000 and 0 < m[1] < 40:  # Music ON OFF Button
                 if music_on:
@@ -136,7 +136,7 @@ while active:
                         sound.click.play()
 
     # HOME PAGE SCREEN
-    if play_mode == pm.load:
+    if ess.play_mode == pm.load:
         root.blit(img.load, (0, 0))
         text = pygame.font.Font(fnt.joe_fin, 50).render("<", True, (255, 238, 46))
         root.blit(text, [20, 140])
@@ -150,7 +150,7 @@ while active:
             root.blit(text, [93, 153])
 
     # PLAYING MODE SCREEN
-    elif play_mode == pm.in_game:
+    elif ess.play_mode == pm.in_game:
 
         # Checking for winner
         for i in ess.player_list:
@@ -264,7 +264,7 @@ while active:
 
             else:
                 if win_dec and ess.play_lag == 100:
-                    play_mode = pm.win
+                    ess.play_mode = pm.win
 
                 if not pen_check:
                     print("Pre penalty:", ess.position, ess.player_list[ess.position], ess.uno[ess.position])
@@ -297,17 +297,18 @@ while active:
                     root.blit(img.line, (870, 145))
 
     # RULES PAGE SCREEN
-    elif play_mode == pm.info:
+    elif ess.play_mode == pm.info:
         root.blit(img.help, (0, 0))
         root.blit(img.back, (10, 10))
 
     # WIN SCREEN
-    elif play_mode == pm.win:
+    elif ess.play_mode == pm.win:
         string = ""
-        if ess.winner == 0:
-            string = "Well Done! You've Won this Round!"
-        else:
-            string = "%s has won this Round" % ess.bot_map[ess.winner]
+        if ess.winner != -1:
+            if ess.winner == 0:
+                string = "Well Done! You've Won this Round!"
+            else:
+                string = "%s has won this Round" % ess.bot_map[ess.winner]
 
         # Rendering and blitting
         root.blit(img.win, (0, 0))

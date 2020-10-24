@@ -17,10 +17,9 @@ def create(ob):
 
     for i in range(3):
         while peek(ob.deck1) in [('Wild', 'Black'), ('+4', 'Black'), ('Skip', 'Red'), ('Skip', 'Green'),
-                                 ('Skip', 'Blue'),
-                                 ('Skip', 'Yellow'), ('Reverse', 'Red'), ('Reverse', 'Green'), ('Reverse', 'Blue'),
-                                 ('Reverse', 'Yellow'), ('+2', 'Red'), ('+2', 'Green'), ('+2', 'Blue'),
-                                 ('+2', 'Yellow')]:
+                                 ('Skip', 'Blue'), ('Skip', 'Yellow'), ('Reverse', 'Red'), ('Reverse', 'Green'),
+                                 ('Reverse', 'Blue'), ('Reverse', 'Yellow'), ('+2', 'Red'), ('+2', 'Green'),
+                                 ('+2', 'Blue'), ('+2', 'Yellow')]:
             random.shuffle(ob.deck1)
 
     ob.deck2.append(ob.deck1.pop())
@@ -44,6 +43,7 @@ def set_curr_player(ob, default):
 
 
 def re_initialize(ob):
+    ob.play_mode = "LOAD PAGE"
     ob.winner = -1
     ob.player_playing = False
     ob.play_lag = -1

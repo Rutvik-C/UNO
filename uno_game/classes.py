@@ -26,6 +26,7 @@ class Essentials(object):
         self.player_playing = False
         self.winner = -1
         self.play_lag = -1
+        self.play_mode = ""
 
 
 class PlayMode(object):
