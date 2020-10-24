@@ -6,7 +6,6 @@ pygame.init()
 
 # Creating Objects
 img = Image()
-col = Color()
 pm = PlayMode()
 sound = Sound()
 fnt = TextFont()
@@ -14,23 +13,22 @@ ess = Essentials()
 
 # Creating root window
 root = pygame.display.set_mode((1000, 600))
-root.fill(col.black)
 pygame.display.set_caption('UNO')
 pygame.display.set_icon(img.icon)
 
 # Setting up background Music
 pygame.mixer.music.load(sound.back_g)
 pygame.mixer.music.play(-1)  # continuous bg music
-pygame.mixer.music.set_volume(0.3)
-music_on = True
+pygame.mixer.music.set_volume(0.3)  # Setting background music volume
+music_on = True  # To track music status
 
 # Setting up initial game variables
 active = True  # While game is ON this variable is True
-ess.play_mode = pm.load
+ess.play_mode = pm.load  # Initial play mode will be home page
 
 disp = False
-win_dec = False
-pen_check = False
+win_dec = False  # True if Winner is declared
+pen_check = False  # Penalty check flag
 
 # Dealing the cards
 create(ess)
@@ -47,7 +45,7 @@ while active:
 
         # Mouse click Check
         if inp.type == pygame.MOUSEBUTTONDOWN:
-            m = pygame.mouse.get_pos()
+            m = pygame.mouse.get_pos()  # Fetching mouse click location
 
             if ((20 < m[0] < 55 or 210 < m[0] < 245) and 150 < m[1] < 180) and ess.play_mode == pm.load:  # Left Right Button
                 if music_on:
@@ -77,6 +75,7 @@ while active:
                 if music_on:
                     sound.click.play()
                 re_initialize(ess)
+                win_dec = False
                 ess.play_mode = pm.load
 
             if 960 < m[0] < 1000 and 0 < m[1] < 40:  # Music ON OFF Button
@@ -101,7 +100,7 @@ while active:
                         sound.click.play()
                     ess.player_playing = False
 
-                for i in range(625, 625 - 50 * len(ess.player_list[0]), -50):
+                for i in range(625, 625 - 50 * len(ess.player_list[0]), -50):  # Detecting the card clicked by user
                     if i < m[0] < i + 50 and 470 < m[1] < 585:
                         play_this_card(ess, ess.player_list[0][int((625 - i) / 50)])
                         if music_on:
@@ -112,8 +111,8 @@ while active:
                     if music_on:
                         sound.card_drawn.play()
 
+            # Post black card operation, New color picker
             if ess.choose_color:
-
                 if 395 < m[0] < 440 and 390 < m[1] < 450:  # Red Button
                     ess.choose_color = False
                     play_this_card_2(ess, "Red")
@@ -137,6 +136,8 @@ while active:
 
     # HOME PAGE SCREEN
     if ess.play_mode == pm.load:
+
+        # Blitting essential images and texts
         root.blit(img.load, (0, 0))
         text = pygame.font.Font(fnt.joe_fin, 50).render("<", True, (255, 238, 46))
         root.blit(text, [20, 140])
@@ -205,12 +206,12 @@ while active:
             root.blit(img.blue, (505, 390))
             root.blit(img.yellow, (560, 390))
 
-        # Play conditions
-        if ess.player_playing:
+        # Play Flow
+        if ess.player_playing:  # Player is playing
             ess.message = ""
 
-            if not ess.drawn and not ess.played:
-                if ess.current[0] == '+2' and ess.special_check == 0:
+            if not ess.drawn and not ess.played:  # Checking for previous special card overheads
+                if ess.current[0] == '+2' and ess.special_check == 0:  # Draw 2
                     for _ in range(2):
                         try:
                             ess.player_list[0].append(ess.deck1.pop())
@@ -221,7 +222,8 @@ while active:
                     print("Draw", ess.current[0])
                     ess.special_check = 1
                     ess.player_playing = False
-                elif ess.current[0] == '+4' and ess.special_check == 0:
+
+                elif ess.current[0] == '+4' and ess.special_check == 0:  # Draw 4
                     for _ in range(4):
                         try:
                             ess.player_list[0].append(ess.deck1.pop())
@@ -232,41 +234,43 @@ while active:
                     ess.special_check = 1
                     ess.player_playing = False
 
+            # Blitting active player line and essential buttons
             root.blit(img.line, (682, 550))
             root.blit(img.done, (775, 505))
             root.blit(img.uno_button, (850, 500))
 
         else:
-            if ess.play_lag == 200:  # Lag Implementation
+            if ess.play_lag == 200:  # Implementing Lag between 2 players actions
                 disp = False
                 pen_check = False
 
-                # Calculating next player
+                # Getting current playing players index
                 set_curr_player(ess, True)
                 print("calling bot fun ->", ess.position)
 
-                # Checking for player played
+                # Checking if it's players turn
                 if ess.position == 0:
                     print("Player play")
                     ess.uno[0] = False
                     ess.player_playing = True
 
                 else:
-                    # Reinitialising Flags
+                    # Reinitialising player flags
                     ess.played = False
                     ess.drawn = False
 
+                    # Making the bot play
                     bot_action(ess, sound)
 
                 print()
 
-                ess.play_lag = 0
+                ess.play_lag = 0  # Resetting lag
 
             else:
-                if win_dec and ess.play_lag == 100:
+                if win_dec and ess.play_lag == 100:  # Winner declare lag
                     ess.play_mode = pm.win
 
-                if not pen_check:
+                if not pen_check:  # Penalty check algorithm
                     print("Pre penalty:", ess.position, ess.player_list[ess.position], ess.uno[ess.position])
                     if ess.position != -1 and len(ess.player_list[ess.position]) == 1 and not ess.uno[
                        ess.position]:  # Penalty
@@ -288,7 +292,7 @@ while active:
                     print("\n*** %d ***\n*** gen=%d ***\n" % (ess.position, (ess.position + ess.direction_check) % 4))
                     disp = True
 
-                # Line graphic
+                # Active player graphic line
                 if (ess.position + ess.direction_check) % 4 == 1:
                     root.blit(img.line, (67, 512))
                 elif (ess.position + ess.direction_check) % 4 == 2:
@@ -302,13 +306,17 @@ while active:
         root.blit(img.back, (10, 10))
 
     # WIN SCREEN
-    elif ess.play_mode == pm.win:
+    elif ess.play_mode == pm.win and ess.winner != -1:
+        # sounds
+        if music_on:
+            sound.victory.play()
+
+        # Setting up appropriate message
         string = ""
-        if ess.winner != -1:
-            if ess.winner == 0:
-                string = "Well Done! You've Won this Round!"
-            else:
-                string = "%s has won this Round" % ess.bot_map[ess.winner]
+        if ess.winner == 0:
+            string = "Well Done! You've Won this Round!"
+        else:
+            string = "%s has won this Round" % ess.bot_map[ess.winner]
 
         # Rendering and blitting
         root.blit(img.win, (0, 0))

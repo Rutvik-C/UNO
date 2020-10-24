@@ -3,47 +3,42 @@ import pygame
 
 class Essentials(object):
     def __init__(self):
-        self.p1 = list()
-        self.p2 = list()
-        self.p3 = list()
-        self.p4 = list()
-        self.player_list = [self.p1, self.p2, self.p3, self.p4]
+        self.player_list = [[], [], [], []]  # List of lists -> For storing players' cards
         self.deck1 = list()
         self.deck2 = list()
-        self.direction_check = 1
-        self.position = -1
-        self.current = list()
-        self.drawn = False
+        self.direction_check = 1  # Tracking direction of game
+        self.position = -1  # Playing player index
+        self.current = list()  # Current card on top of stack
+
+        self.drawn = False  # User play flags
         self.played = False
         self.choose_color = False
-        self.played_check = 0
-        self.special_check = 0
-        self.uno = [True] * 4
-        self.message = "DEALING THE CARDS"
-        self.easy = True
-        self.bot_map = {1: "FRIDAY", 2: "EDITH", 3: "JARVIS"}
-        self.color = ['Blue', 'Red', 'Green', 'Yellow']
         self.player_playing = False
         self.winner = -1
         self.play_lag = -1
         self.play_mode = ""
 
+        self.played_check = 0  # Play checker
+        self.special_check = 0  # Special card overhead checker
+        self.uno = [True] * 4  # UNO shout flags
+        self.message = "DEALING THE CARDS"  # In game messages
+        self.easy = True  # Difficulty level
+        self.bot_map = {1: "FRIDAY", 2: "EDITH", 3: "JARVIS"}  # Indexing bot index to name
+        self.color = ['Blue', 'Red', 'Green', 'Yellow']  # Colors
+
 
 class PlayMode(object):
     def __init__(self):
+        # Declaring various playing modes
         self.load = "LOAD PAGE"
         self.in_game = "IN GAME"
         self.info = "INFO PAGE"
         self.win = "WINNER"
 
 
-class Color(object):
-    def __init__(self):
-        self.black = (0, 0, 0)
-
-
 class Image(object):
     def __init__(self):
+        # Loading required image files
         self.icon = pygame.image.load("./images/icon.png")
         self.load = pygame.image.load("./images/uno_load.png")
         self.bg = pygame.image.load("./images/background.png")
@@ -73,15 +68,18 @@ class Image(object):
 
 class Sound(object):
     def __init__(self):
+        # Loading required sound files
         self.back_g = "./sound/bg_music.wav"
         self.click = pygame.mixer.Sound('./sound/Minecraft-hat.wav')
         self.card_drawn = pygame.mixer.Sound('./sound/card_drawn.wav')
         self.card_played = pygame.mixer.Sound('./sound/card_played.wav')
         self.shuffled = pygame.mixer.Sound('./sound/shuffle.wav')
         self.uno = pygame.mixer.Sound("./sound/uno.wav")
+        self.victory = pygame.mixer.Sound("./sound/victory.wav")
 
 
 class TextFont(object):
     def __init__(self):
+        # Loading required font files
         self.pacifico = "./fonts/Pacifico.ttf"
         self.joe_fin = "./fonts/JosefinSans-Bold.ttf"

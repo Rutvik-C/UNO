@@ -26,8 +26,9 @@ def create(ob):
     ob.current = ob.deck2[-1]
 
     for j in range(4):
-        for _ in range(7):
+        for _ in range(2):
             ob.player_list[j].append(ob.deck1.pop())
+    ob.player_list[0] = [('Wild', 'Black'), ('+4', 'Black')]
 
 
 def set_curr_player(ob, default):
@@ -43,15 +44,11 @@ def set_curr_player(ob, default):
 
 
 def re_initialize(ob):
-    ob.play_mode = "LOAD PAGE"
+    ob.message = ""
     ob.winner = -1
     ob.player_playing = False
     ob.play_lag = -1
-    ob.p1 = list()
-    ob.p2 = list()
-    ob.p3 = list()
-    ob.p4 = list()
-    ob.player_list = [ob.p1, ob.p2, ob.p3, ob.p4]
+    ob.player_list = [[], [], [], []]
     ob.deck1 = list()
     ob.deck2 = list()
     ob.direction_check = 1
