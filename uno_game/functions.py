@@ -26,9 +26,8 @@ def create(ob):
     ob.current = ob.deck2[-1]
 
     for j in range(4):
-        for _ in range(2):
+        for _ in range(7):
             ob.player_list[j].append(ob.deck1.pop())
-    ob.player_list[0] = [('Wild', 'Black'), ('+4', 'Black')]
 
 
 def set_curr_player(ob, default):
