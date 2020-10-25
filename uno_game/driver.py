@@ -219,7 +219,6 @@ while active:
                             ess.deck1, ess.deck2 = ess.deck2, ess.deck1
                             random.shuffle(ess.deck1)
                             ess.player_list[0].append(ess.deck1.pop())
-                    print("Draw", ess.current[0])
                     ess.special_check = 1
                     ess.player_playing = False
 
@@ -246,11 +245,9 @@ while active:
 
                 # Getting current playing players index
                 set_curr_player(ess, True)
-                print("calling bot fun ->", ess.position)
 
                 # Checking if it's players turn
                 if ess.position == 0:
-                    print("Player play")
                     ess.uno[0] = False
                     ess.player_playing = True
 
@@ -262,7 +259,6 @@ while active:
                     # Making the bot play
                     bot_action(ess, sound)
 
-                print()
 
                 ess.play_lag = 0  # Resetting lag
 
@@ -271,25 +267,19 @@ while active:
                     ess.play_mode = pm.win
 
                 if not pen_check:  # Penalty check algorithm
-                    print("Pre penalty:", ess.position, ess.player_list[ess.position], ess.uno[ess.position])
                     if ess.position != -1 and len(ess.player_list[ess.position]) == 1 and not ess.uno[
                        ess.position]:  # Penalty
-                        print("PENALTY TO", ess.position, "\nBefore", ess.player_list[0], "\n",
-                              ess.player_list[1], "\n", ess.player_list[2], "\n", ess.player_list[3])
                         for j in range(4):
                             if ess.position != j:
                                 ess.player_list[ess.position].append(ess.player_list[j].pop())
 
                         ess.message = "Penalty!"
                         ess.uno[ess.position] = True
-                        print("After", ess.player_list[0], "\n", ess.player_list[1], "\n", ess.player_list[2], "\n",
-                              ess.player_list[3])
                     pen_check = True
 
                 ess.play_lag += 1
 
                 if not disp:
-                    print("\n*** %d ***\n*** gen=%d ***\n" % (ess.position, (ess.position + ess.direction_check) % 4))
                     disp = True
 
                 # Active player graphic line
