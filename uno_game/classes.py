@@ -3,7 +3,7 @@ import pygame
 
 class Essentials(object):
     def __init__(self):
-        self.player_list = [[], [], [], []]  # List of lists -> For storing players' cards
+        self.player_list = [[], [], [], []]  # Generalised ll -> For storing players' cards
         self.deck1 = list()
         self.deck2 = list()
         self.direction_check = 1  # Tracking direction of game

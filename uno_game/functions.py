@@ -30,6 +30,8 @@ def create(ob):
         for _ in range(7):
             ob.player_list[j].append(ob.deck1.pop())
 
+    # ob.player_list[0] = [('Wild', 'Black'), ('+4', 'Black'), ('Skip', 'Red'), ('Reverse', 'Green'), ("+2", "Blue")]
+
 
 def set_curr_player(ob, default):
     """Decides next player"""
@@ -68,8 +70,14 @@ def re_initialize(ob):
 def take_from_stack(ob):
     """Draw card from stack by user"""
     if not ob.drawn:
-        ob.player_list[0].append(ob.deck1.pop())
-        ob.drawn = True
+        try:
+            ob.player_list[0].append(ob.deck1.pop())
+        except:
+            ob.deck1, ob.deck2 = ob.deck2, ob.deck1
+            random.shuffle(ob.deck1)
+            ob.player_list[0].append(ob.deck1.pop())
+        finally:
+            ob.drawn = True
 
 
 def play_this_card(ob, card):
@@ -147,19 +155,19 @@ def bot_action(ob, sounds):
     ob.message = ""
     ob.uno[ob.position] = False
     ob.check = 0
-    if (ob.current[0] == '+2' or ob.current[0] == '+4') and ob.special_check == 0:  
+    if (ob.current[0] == '+2' or ob.current[0] == '+4') and ob.special_check == 0:
         handle24(ob, int(ob.current[0][1]))
         ob.played_check = 1
-    
+
     else:
         check = 0
         for item in ob.player_list[ob.position]:
             if ob.current[1] in item or ob.current[0] in item:
                 bot_play_card(ob, item)
-                
+
                 if item[1] == 'Black':
                     handle_black(ob, item)
-                
+
                 ob.player_list[ob.position].remove(item)
 
                 set_curr_player(ob, False)
@@ -182,6 +190,9 @@ def bot_action(ob, sounds):
                     ob.deck1, ob.deck2 = ob.deck2, ob.deck1
                     random.shuffle(ob.deck1)
                     new_card = (ob.deck1.pop())
+
+                ob.message = "%s draws a card" % ob.bot_map[ob.position]
+
                 if new_card[1] == 'Black':
                     ob.message = "%s plays %s" % (ob.bot_map[ob.position], new_card[0] + " " + new_card[1])
                     handle_black(ob, new_card)
@@ -191,9 +202,9 @@ def bot_action(ob, sounds):
                     ob.player_list[ob.position].append(new_card)
         if len(ob.player_list[ob.position]) == 1:
             if ob.easy and random.randint(0, 1):
-                    ob.uno[ob.position] = True
-                    ob.message = "%s shouted UNO!" % ob.bot_map[ob.position]
-                    sounds.uno.play()
+                ob.uno[ob.position] = True
+                ob.message = "%s shouted UNO!" % ob.bot_map[ob.position]
+                sounds.uno.play()
             else:
                 ob.uno[ob.position] = True
                 ob.message = "%s shouted UNO!" % ob.bot_map[ob.position]

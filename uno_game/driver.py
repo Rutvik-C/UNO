@@ -47,7 +47,8 @@ while active:
         if inp.type == pygame.MOUSEBUTTONDOWN:
             m = pygame.mouse.get_pos()  # Fetching mouse click location
 
-            if ((20 < m[0] < 55 or 210 < m[0] < 245) and 150 < m[1] < 180) and ess.play_mode == pm.load:  # Left Right Button
+            if ((20 < m[0] < 55 or 210 < m[0] < 245) and 150 < m[
+                1] < 180) and ess.play_mode == pm.load:  # Left Right Button
                 if music_on:
                     sound.click.play()
                 if ess.easy:
@@ -65,7 +66,8 @@ while active:
                     sound.click.play()
                 ess.play_mode = pm.info
 
-            if 10 < m[0] < 42 and 10 < m[1] < 42 and (ess.play_mode == pm.in_game or ess.play_mode == pm.info):  # Back Button
+            if 10 < m[0] < 42 and 10 < m[1] < 42 and (
+                    ess.play_mode == pm.in_game or ess.play_mode == pm.info):  # Back Button
                 if music_on:
                     sound.click.play()
                 re_initialize(ess)
@@ -259,7 +261,6 @@ while active:
                     # Making the bot play
                     bot_action(ess, sound)
 
-
                 ess.play_lag = 0  # Resetting lag
 
             else:
@@ -267,8 +268,7 @@ while active:
                     ess.play_mode = pm.win
 
                 if not pen_check:  # Penalty check algorithm
-                    if ess.position != -1 and len(ess.player_list[ess.position]) == 1 and not ess.uno[
-                       ess.position]:  # Penalty
+                    if ess.position != -1 and len(ess.player_list[ess.position]) == 1 and not ess.uno[ess.position]:  # Penalty
                         for j in range(4):
                             if ess.position != j:
                                 ess.player_list[ess.position].append(ess.player_list[j].pop())
