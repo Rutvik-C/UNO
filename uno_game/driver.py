@@ -240,7 +240,7 @@ while active:
             root.blit(img.uno_button, (850, 500))
 
         else:
-            if ess.play_lag == 200:  # Implementing Lag between 2 players actions
+            if ess.play_lag == 140:  # Implementing Lag between 2 players actions
                 disp = False
                 pen_check = False
 
@@ -267,7 +267,7 @@ while active:
                 ess.play_lag = 0  # Resetting lag
 
             else:
-                if win_dec and ess.play_lag == 100:  # Winner declare lag
+                if win_dec and ess.play_lag == 70:  # Winner declare lag
                     ess.play_mode = pm.win
 
                 if not pen_check:  # Penalty check algorithm

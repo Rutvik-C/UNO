@@ -69,7 +69,7 @@ class Image(object):
 class Sound(object):
     def __init__(self):
         # Loading required sound files
-        self.back_g = "./sound/bg_music.wav"
+        self.back_g = "./sound/bg.wav"
         self.click = pygame.mixer.Sound('./sound/Minecraft-hat.wav')
         self.card_drawn = pygame.mixer.Sound('./sound/card_drawn.wav')
         self.card_played = pygame.mixer.Sound('./sound/card_played.wav')
