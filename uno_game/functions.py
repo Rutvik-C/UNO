@@ -2,38 +2,40 @@ import itertools
 import random
 
 
-def peek(s):#Peek for stack
+def peek(s):
+    """Peek"""
     return s[-1]
 
 
-def create(ob):#Creates decks and player's cards
+def create(ob):
+    """Dealing the cards"""
     a = ('0', '1', '1', '2', '2', '3', '3', '4', '4', '5', '5', '6', '6', '7', '7', '8', '8', '9', '9',
          '+2', '+2', 'Skip', 'Skip', 'Reverse', 'Reverse')
-    ob.deck1 = list(itertools.product(a, ob.color))#Deck created
-    for _ in range(4):#Adds special black cards to decks
+    ob.deck1 = list(itertools.product(a, ob.color))  # Deck created
+    for _ in range(4):  # Adds special black cards to decks
         ob.deck1.append(('Wild', 'Black'))
         ob.deck1.append(('+4', 'Black'))
-    random.shuffle(ob.deck1)#Shuffles deck
+    random.shuffle(ob.deck1)  # Shuffles deck
 
-    for i in range(3):
-        while peek(ob.deck1) in [('Wild', 'Black'), ('+4', 'Black'), ('Skip', 'Red'), ('Skip', 'Green'),
-                                 ('Skip', 'Blue'), ('Skip', 'Yellow'), ('Reverse', 'Red'), ('Reverse', 'Green'),
-                                 ('Reverse', 'Blue'), ('Reverse', 'Yellow'), ('+2', 'Red'), ('+2', 'Green'),
-                                 ('+2', 'Blue'), ('+2', 'Yellow')]:#First card cannot be special card
-            random.shuffle(ob.deck1)
+    while peek(ob.deck1) in [('Wild', 'Black'), ('+4', 'Black'), ('Skip', 'Red'), ('Skip', 'Green'),
+                             ('Skip', 'Blue'), ('Skip', 'Yellow'), ('Reverse', 'Red'), ('Reverse', 'Green'),
+                             ('Reverse', 'Blue'), ('Reverse', 'Yellow'), ('+2', 'Red'), ('+2', 'Green'),
+                             ('+2', 'Blue'), ('+2', 'Yellow')]:  # First card cannot be special card
+        random.shuffle(ob.deck1)
 
-    ob.deck2.append(ob.deck1.pop())#Shifts first card to played deck
-    ob.current = ob.deck2[-1]#Peek from played deck
+    ob.deck2.append(ob.deck1.pop())  # Shifts first card to played deck
+    ob.current = peek(ob.deck2)  # Peek from played deck
 
-    for j in range(4):#Deals cards to player
+    for j in range(4):  # Deals cards to player
         for _ in range(7):
             ob.player_list[j].append(ob.deck1.pop())
 
 
-def set_curr_player(ob, default):#Decides next player
+def set_curr_player(ob, default):
+    """Decides next player"""
     if ob.current[0] == 'Reverse' and ob.special_check == 0:
-        ob.direction_check *= -1#Direction reversed
-        ob.special_check = 1#Special card status inactive
+        ob.direction_check *= -1  # Direction reversed
+        ob.special_check = 1  # Special card status inactive
     if ob.current[0] == 'Skip' and ob.special_check == 0:
         ob.special_check = 1
         ob.position = (ob.position + ob.direction_check) % 4
@@ -43,16 +45,17 @@ def set_curr_player(ob, default):#Decides next player
 
 
 def re_initialize(ob):
-    ob.message = ""#To print message
+    """Reinitialize all the game variables and flags"""
+    ob.message = ""  # To print message
     ob.winner = -1
     ob.player_playing = False
     ob.play_lag = -1
     ob.player_list = [[], [], [], []]
     ob.deck1 = list()
     ob.deck2 = list()
-    ob.direction_check = 1#Flag to check direction of play
-    ob.position = -1#Position counter
-    ob.special_check = 0#Flag to check status of special card
+    ob.direction_check = 1  # Flag to check direction of play
+    ob.position = -1  # Position counter
+    ob.special_check = 0  # Flag to check status of special card
     ob.current = tuple()
     ob.drawn, ob.played, ob.choose_color = False, False, False
     ob.uno = [True] * 4
@@ -62,13 +65,15 @@ def re_initialize(ob):
     create(ob)
 
 
-def take_from_stack(ob):#draw card from stack by user
+def take_from_stack(ob):
+    """Draw card from stack by user"""
     if not ob.drawn:
         ob.player_list[0].append(ob.deck1.pop())
         ob.drawn = True
 
 
-def play_this_card(ob, card):#Play card by user
+def play_this_card(ob, card):
+    """Play card by user"""
     if not ob.played:
         print(card)
         if card[0] == ob.current[0] or card[1] == ob.current[1]:
@@ -89,6 +94,7 @@ def play_this_card(ob, card):#Play card by user
 
 
 def play_this_card_2(ob, color):
+    """Post color selection"""
     print("new color is:", color)
     print("In here 2")
     ob.deck2[-1] = (ob.deck2[-1][0], color)
@@ -96,7 +102,8 @@ def play_this_card_2(ob, color):
     ob.special_check = 0
 
 
-def handle24(ob, n):#Handles +2 and +4 cards
+def handle24(ob, n):
+    """Handles +2 and +4 cards"""
     for _ in range(n):
         try:
             ob.player_list[ob.position].append(ob.deck1.pop())
@@ -109,11 +116,12 @@ def handle24(ob, n):#Handles +2 and +4 cards
     ob.special_check = 1
 
 
-def handle_black(ob, item):#Handles black cards
+def handle_black(ob, item):
+    """Handles black cards"""
     ob.special_check = 0
     ob.deck2.append(item)
     ob.current = peek(ob.deck2)
-    if not ob.easy:# Color picker for hard mode
+    if not ob.easy:  # Color picker for hard mode
         d = dict()
         d['Blue'] = 0
         d['Green'] = 0
@@ -123,19 +131,20 @@ def handle_black(ob, item):#Handles black cards
         for _item in ob.player_list[ob.position]:
             d[_item[1]] += 1
         d = sorted(d.items(), key=lambda kv: (kv[1], kv[0]))
-        new_color = d[-1][0]#Picks  most frequent color
+        new_color = d[-1][0]  # Picks  most frequent color
         print(d, new_color)
         if new_color == 'Black':
             new_color = d[-2][0]
             print(d, new_color)
     else:
-        new_color = random.choice(ob.color)#Random color picked for easy mode
+        new_color = random.choice(ob.color)  # Random color picked for easy mode
     print("Color changes to:", new_color)
     ob.message = "%s plays %s %s, new color is %s" % (ob.bot_map[ob.position], item[0], item[1], new_color)
     ob.current = (ob.current[0], new_color)
 
 
 def bot_play_card(ob, item):
+    """Bot plays a card"""
     ob.special_check = 0
     ob.deck2.append(item)
     ob.current = peek(ob.deck2)
@@ -143,6 +152,7 @@ def bot_play_card(ob, item):
 
 
 def bot_action(ob, sounds):
+    """Bot logic"""
     ob.message = ""
     ob.uno[ob.position] = False
     print("Bot called ->", ob.position)
