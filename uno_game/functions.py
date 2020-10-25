@@ -83,7 +83,7 @@ def take_from_stack(ob):
 def play_this_card(ob, card):
     """Play card by user"""
     if not ob.played:
-        if card[0] == ob.current[0] or card[1] == ob.current[1]:
+        if (card[0] == ob.current[0] or card[1] == ob.current[1]) and (card[0] not in('+4','Wild')):
             ob.played, ob.drawn = True, True
             ob.deck2.append(card)
             ob.current = peek(ob.deck2)
